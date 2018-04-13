@@ -1,4 +1,4 @@
-package com.example.administrator.beerviewer.data.source;
+package com.example.administrator.beerviewer.data.source.splash;
 
 import com.example.administrator.beerviewer.data.BeerModel;
 
@@ -21,7 +21,7 @@ public class SplashRepository implements SplashDataSource {
     private SplashDataSource splashRemoteDataSource;
 
     @Override
-    public Single<List<BeerModel>> getBeers() {
-        return splashRemoteDataSource.getBeers();
+    public Single<List<BeerModel>> getAllBeers() {
+        return splashRemoteDataSource.getAllBeers();
     }
 }

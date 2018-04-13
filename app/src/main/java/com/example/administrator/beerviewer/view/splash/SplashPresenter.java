@@ -5,9 +5,8 @@ import android.util.Log;
 import com.example.administrator.beerviewer.BeerViewerApplication;
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.BeerModel;
-import com.example.administrator.beerviewer.data.source.SplashDataSource;
-import com.example.administrator.beerviewer.data.source.SplashRepository;
-import com.example.administrator.beerviewer.db.BeerDatabase;
+import com.example.administrator.beerviewer.data.source.splash.SplashDataSource;
+import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     private void getBeers() {
-        splashRepository.getBeers()
+        splashRepository.getAllBeers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<BeerModel>>() {

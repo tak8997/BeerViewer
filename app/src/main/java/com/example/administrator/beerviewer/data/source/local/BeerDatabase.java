@@ -1,4 +1,4 @@
-package com.example.administrator.beerviewer.db;
+package com.example.administrator.beerviewer.data.source.local;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;

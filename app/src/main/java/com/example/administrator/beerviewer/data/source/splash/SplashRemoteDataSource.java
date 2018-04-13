@@ -1,8 +1,7 @@
-package com.example.administrator.beerviewer.data.source;
+package com.example.administrator.beerviewer.data.source.splash;
 
 import com.example.administrator.beerviewer.data.BeerModel;
 import com.example.administrator.beerviewer.network.BeerApiService;
-import com.example.administrator.beerviewer.network.BeerViewerClient;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class SplashRemoteDataSource implements SplashDataSource {
     private final BeerApiService apiService;
 
     @Override
-    public Single<List<BeerModel>> getBeers() {
+    public Single<List<BeerModel>> getAllBeers() {
         return apiService.getBeers();
     }
 }

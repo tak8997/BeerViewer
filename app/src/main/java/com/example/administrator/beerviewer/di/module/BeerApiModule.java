@@ -2,8 +2,8 @@ package com.example.administrator.beerviewer.di.module;
 
 
 import com.example.administrator.beerviewer.Constant;
-import com.example.administrator.beerviewer.data.source.SplashDataSource;
-import com.example.administrator.beerviewer.data.source.SplashRemoteDataSource;
+import com.example.administrator.beerviewer.data.source.splash.SplashDataSource;
+import com.example.administrator.beerviewer.data.source.splash.SplashRemoteDataSource;
 import com.example.administrator.beerviewer.network.BeerApiService;
 
 import java.util.concurrent.TimeUnit;

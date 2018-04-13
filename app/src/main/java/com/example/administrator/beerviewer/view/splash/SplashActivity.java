@@ -1,6 +1,5 @@
 package com.example.administrator.beerviewer.view.splash;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +8,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.beerviewer.R;
-import com.example.administrator.beerviewer.view.beerview.BeerViewActivity;
+import com.example.administrator.beerviewer.view.beersview.BeersViewActivity;
 
 import javax.inject.Inject;
 
@@ -51,7 +50,7 @@ public class SplashActivity extends DaggerAppCompatActivity
 
     @Override
     public void startBeerViewActivity() {
-        Intent intent = new Intent(SplashActivity.this, BeerViewActivity.class);
+        Intent intent = new Intent(SplashActivity.this, BeersViewActivity.class);
         startActivity(intent);
         finish();
     }

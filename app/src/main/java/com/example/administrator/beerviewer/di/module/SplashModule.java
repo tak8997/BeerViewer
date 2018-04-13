@@ -1,10 +1,8 @@
 package com.example.administrator.beerviewer.di.module;
 
 
-import com.example.administrator.beerviewer.data.source.SplashDataSource;
-import com.example.administrator.beerviewer.data.source.SplashRepository;
+import com.example.administrator.beerviewer.data.source.splash.SplashDataSource;
 import com.example.administrator.beerviewer.di.ActivityScope;
-import com.example.administrator.beerviewer.view.splash.SplashActivity;
 import com.example.administrator.beerviewer.view.splash.SplashContract;
 import com.example.administrator.beerviewer.view.splash.SplashPresenter;
 
