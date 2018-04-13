@@ -1,4 +1,4 @@
-package com.example.administrator.beerviewer.data.source.splash;
+package com.example.administrator.beerviewer.data.source;
 
 import com.example.administrator.beerviewer.data.BeerModel;
 
@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 
-public interface SplashDataSource {
+public interface BeerDataSource {
 
     Single<List<BeerModel>> getAllBeers();
 

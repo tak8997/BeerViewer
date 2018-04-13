@@ -1,5 +1,6 @@
-package com.example.administrator.beerviewer.data.source.splash;
+package com.example.administrator.beerviewer.data.source;
 
+import com.example.administrator.beerviewer.data.source.BeerDataSource;
 import com.example.administrator.beerviewer.data.BeerModel;
 
 import java.util.List;
@@ -10,15 +11,15 @@ import javax.inject.Singleton;
 import io.reactivex.Single;
 
 @Singleton
-public class SplashRepository implements SplashDataSource {
+public class BeerRepository implements BeerDataSource {
 
     //remote, local을 주입 받는다.
     @Inject
-    public SplashRepository(SplashDataSource splashDataSource) {
+    public BeerRepository(BeerDataSource splashDataSource) {
         this.splashRemoteDataSource = splashDataSource;
     }
 
-    private SplashDataSource splashRemoteDataSource;
+    private BeerDataSource splashRemoteDataSource;
 
     @Override
     public Single<List<BeerModel>> getAllBeers() {

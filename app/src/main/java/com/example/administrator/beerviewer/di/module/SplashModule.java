@@ -1,7 +1,7 @@
 package com.example.administrator.beerviewer.di.module;
 
 
-import com.example.administrator.beerviewer.data.source.splash.SplashDataSource;
+import com.example.administrator.beerviewer.data.source.BeerDataSource;
 import com.example.administrator.beerviewer.di.ActivityScope;
 import com.example.administrator.beerviewer.view.splash.SplashContract;
 import com.example.administrator.beerviewer.view.splash.SplashPresenter;
@@ -19,7 +19,7 @@ public class SplashModule {
 
     @Provides
     @ActivityScope
-    SplashContract.Presenter provideSplashPresenter(SplashDataSource splashRepository) {
+    SplashContract.Presenter provideSplashPresenter(BeerDataSource splashRepository) {
         return new SplashPresenter(splashRepository);
     }
 }

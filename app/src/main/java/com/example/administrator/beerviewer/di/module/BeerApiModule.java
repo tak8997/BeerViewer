@@ -2,8 +2,8 @@ package com.example.administrator.beerviewer.di.module;
 
 
 import com.example.administrator.beerviewer.Constant;
-import com.example.administrator.beerviewer.data.source.splash.SplashDataSource;
-import com.example.administrator.beerviewer.data.source.splash.SplashRemoteDataSource;
+import com.example.administrator.beerviewer.data.source.BeerDataSource;
+import com.example.administrator.beerviewer.data.source.remote.SplashRemoteDataSource;
 import com.example.administrator.beerviewer.network.BeerApiService;
 
 import java.util.concurrent.TimeUnit;
@@ -55,7 +55,7 @@ public class BeerApiModule {
 
     @Provides
     @Singleton
-    SplashDataSource provideSplashRemoteDataSource(BeerApiService beerApiService) {
+    BeerDataSource provideSplashRemoteDataSource(BeerApiService beerApiService) {
         return new SplashRemoteDataSource(beerApiService);
     }
 
