@@ -11,19 +11,22 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.view.beerview.BeerViewActivity;
 
-public class SplashActivity extends Activity
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class SplashActivity extends DaggerAppCompatActivity
         implements SplashContract.View {
 
-    private SplashContract.Presenter presenter;
+    @Inject
+    public SplashContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        presenter = new SplashPresenter();
         presenter.takeView(this);
-
         showSplashAnimation();
     }
 

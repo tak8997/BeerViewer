@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import com.example.administrator.beerviewer.R;
 
-public class BeerViewActivity extends AppCompatActivity {
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class BeerViewActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
