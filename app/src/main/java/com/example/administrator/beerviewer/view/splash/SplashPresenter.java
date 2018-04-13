@@ -54,7 +54,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     @Override
-    public void takeView(SplashContract.View View) {
+    public void takeView(SplashContract.View view) {
         this.view = view;
     }
 
