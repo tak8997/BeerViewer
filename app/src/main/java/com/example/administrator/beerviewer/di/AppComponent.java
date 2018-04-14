@@ -4,13 +4,11 @@ package com.example.administrator.beerviewer.di;
 import android.app.Application;
 
 import com.example.administrator.beerviewer.BeerViewerApplication;
-import com.example.administrator.beerviewer.di.module.BeerApiModule;
 
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import dagger.android.AndroidInjectionModule;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
@@ -31,7 +29,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         AndroidSupportInjectionModule.class,
         AppModule.class,
         ActivityBindingModule.class,
-        BeerApiModule.class})
+        BeerRepositoryModule.class})
 public interface AppComponent extends AndroidInjector<BeerViewerApplication> {
 
     @Component.Builder

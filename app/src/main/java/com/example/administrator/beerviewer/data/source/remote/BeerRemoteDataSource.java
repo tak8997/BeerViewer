@@ -12,12 +12,11 @@ import javax.inject.Singleton;
 import io.reactivex.Single;
 
 @Singleton
-public class SplashRemoteDataSource implements BeerDataSource {
+public class BeerRemoteDataSource implements BeerDataSource {
 
     @Inject
-    public SplashRemoteDataSource(BeerApiService apiService) {
+    public BeerRemoteDataSource(BeerApiService apiService) {
         this.apiService = apiService;
-//        apiService = BeerViewerClient.createService(BeerApiService.class);
     }
 
     private final BeerApiService apiService;
@@ -26,4 +25,11 @@ public class SplashRemoteDataSource implements BeerDataSource {
     public Single<List<BeerModel>> getAllBeers() {
         return apiService.getBeers();
     }
+
+    @Override
+    public void getBeers(int pageStart, int pageEnd, LoadBeersCallback callback) {
+
+    }
+
+
 }

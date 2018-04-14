@@ -29,7 +29,7 @@ public class BeerViewerApplication extends DaggerApplication{
     private void initMemoryLeakDetection() {
         if (LeakCanary.isInAnalyzerProcess(this))
             return;
-        
+
         LeakCanary.install(this);
     }
 

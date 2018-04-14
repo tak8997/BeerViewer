@@ -1,8 +1,8 @@
 package com.example.administrator.beerviewer.di;
 
 
-import com.example.administrator.beerviewer.di.module.BeerViewModule;
-import com.example.administrator.beerviewer.di.module.SplashModule;
+import com.example.administrator.beerviewer.view.beersview.BeersViewModule;
+import com.example.administrator.beerviewer.view.splash.SplashModule;
 import com.example.administrator.beerviewer.view.beersview.BeersViewActivity;
 import com.example.administrator.beerviewer.view.splash.SplashActivity;
 
@@ -16,7 +16,7 @@ public abstract class ActivityBindingModule {
     @ActivityScope
     abstract SplashActivity splashActivity();
 
-    @ContributesAndroidInjector(modules = BeerViewModule.class)
+    @ContributesAndroidInjector(modules = BeersViewModule.class)
     @ActivityScope
     abstract BeersViewActivity beerViewActivity();
 }

@@ -10,7 +10,7 @@ public interface BeersViewContract {
 
     interface View extends BaseView<Presenter> {
 
-        void addItems(List<BeerModel> beers);
+        void showItems(List<BeerModel> beers);
     }
 
     interface Presenter extends BasePresenter<View> {

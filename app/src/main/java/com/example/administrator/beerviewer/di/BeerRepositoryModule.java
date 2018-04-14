@@ -1,9 +1,12 @@
-package com.example.administrator.beerviewer.di.module;
+package com.example.administrator.beerviewer.di;
 
 
 import com.example.administrator.beerviewer.Constant;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
-import com.example.administrator.beerviewer.data.source.remote.SplashRemoteDataSource;
+import com.example.administrator.beerviewer.data.source.Local;
+import com.example.administrator.beerviewer.data.source.Remote;
+import com.example.administrator.beerviewer.data.source.local.BeerLocalDataSource;
+import com.example.administrator.beerviewer.data.source.remote.BeerRemoteDataSource;
 import com.example.administrator.beerviewer.network.BeerApiService;
 
 import java.util.concurrent.TimeUnit;
@@ -19,7 +22,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class BeerApiModule {
+public class BeerRepositoryModule {
 
     @Provides
     @Singleton
@@ -55,8 +58,16 @@ public class BeerApiModule {
 
     @Provides
     @Singleton
-    BeerDataSource provideSplashRemoteDataSource(BeerApiService beerApiService) {
-        return new SplashRemoteDataSource(beerApiService);
+    @Remote
+    BeerDataSource provideBeerRemoteDataSource(BeerApiService beerApiService) {
+        return new BeerRemoteDataSource(beerApiService);
+    }
+
+    @Provides
+    @Singleton
+    @Local
+    BeerDataSource provideBeerLocalDataSource() {
+        return new BeerLocalDataSource();
     }
 
 }

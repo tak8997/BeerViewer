@@ -1,6 +1,5 @@
 package com.example.administrator.beerviewer.data.source;
 
-import com.example.administrator.beerviewer.data.source.BeerDataSource;
 import com.example.administrator.beerviewer.data.BeerModel;
 
 import java.util.List;
@@ -13,16 +12,38 @@ import io.reactivex.Single;
 @Singleton
 public class BeerRepository implements BeerDataSource {
 
-    //remote, local을 주입 받는다.
+    private BeerDataSource beerRemoteDataSource;
+    private BeerDataSource beerLocalDataSource;
+    private boolean isCache = true;
+
     @Inject
-    public BeerRepository(BeerDataSource splashDataSource) {
-        this.splashRemoteDataSource = splashDataSource;
+    public BeerRepository(@Remote BeerDataSource beerRemoteDataSource,
+                          @Local BeerDataSource beerLocalDataSource) {
+        this.beerRemoteDataSource = beerRemoteDataSource;
+        this.beerLocalDataSource = beerLocalDataSource;
     }
 
-    private BeerDataSource splashRemoteDataSource;
 
     @Override
     public Single<List<BeerModel>> getAllBeers() {
-        return splashRemoteDataSource.getAllBeers();
+        return beerRemoteDataSource.getAllBeers();
     }
+
+    @Override
+    public void getBeers(int pageStart, int pageEnd, LoadBeersCallback callback) {
+        if (isCache) {
+            beerLocalDataSource.getBeers(pageStart, pageEnd, new LoadBeersCallback() {
+                @Override
+                public void onTaskLoaded(List<BeerModel> beers) {
+
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+        }
+    }
+
 }

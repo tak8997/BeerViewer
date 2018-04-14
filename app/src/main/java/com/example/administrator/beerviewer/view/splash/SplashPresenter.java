@@ -5,7 +5,7 @@ import android.util.Log;
 import com.example.administrator.beerviewer.BeerViewerApplication;
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.BeerModel;
-import com.example.administrator.beerviewer.data.source.BeerDataSource;
+import com.example.administrator.beerviewer.data.source.BeerRepository;
 import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
 
 import java.util.List;
@@ -20,11 +20,11 @@ import io.reactivex.schedulers.Schedulers;
 public class SplashPresenter implements SplashContract.Presenter {
 
     private SplashContract.View view;
-    private BeerDataSource splashRepository;
+    private BeerRepository beerRespository;
 
     @Inject
-    public SplashPresenter(BeerDataSource splashRepository) {
-        this.splashRepository = splashRepository;
+    public SplashPresenter(BeerRepository beerRespository) {
+        this.beerRespository = beerRespository;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     private void getBeers() {
-        splashRepository.getAllBeers()
+        beerRespository.getAllBeers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<BeerModel>>() {

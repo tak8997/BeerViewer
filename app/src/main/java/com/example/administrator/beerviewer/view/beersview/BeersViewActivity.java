@@ -1,20 +1,20 @@
 package com.example.administrator.beerviewer.view.beersview;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.BeerModel;
-import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +32,8 @@ public class BeersViewActivity extends DaggerAppCompatActivity
     @BindView(R.id.app_bar)
     Toolbar toolbar;
 
-    private BeersViewContract.Presenter presenter;
+    @Inject
+    BeersViewContract.Presenter presenter;
 
     private BeersAdapter adapter;
 
@@ -46,7 +47,7 @@ public class BeersViewActivity extends DaggerAppCompatActivity
 
         initView();
 
-        presenter = new BeersViewPresenter();
+//        presenter = new BeersViewPresenter();
         presenter.takeView(this);
         presenter.getBeers(pageStart, pageEnd);
     }
@@ -69,7 +70,7 @@ public class BeersViewActivity extends DaggerAppCompatActivity
     }
 
     @Override
-    public void addItems(List<BeerModel> beers) {
+    public void showItems(List<BeerModel> beers) {
         adapter.addItems(beers);
     }
 
@@ -82,17 +83,6 @@ public class BeersViewActivity extends DaggerAppCompatActivity
                 refreshLayout.setRefreshing(false);
             }
         }, 1000);
-    }
-
-    private void addItem() {
-        List<BeerModel> beers
-                = BeerDatabase.getInstance().getBeerDao().getBeers(pageStart += 10, pageEnd += 10);
-        adapter.addItems(beers);
-
-        for (BeerModel beer : beers)
-            Log.d("beer_item", beer.getId()+"");
-
-        refreshLayout.setRefreshing(false);
     }
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
