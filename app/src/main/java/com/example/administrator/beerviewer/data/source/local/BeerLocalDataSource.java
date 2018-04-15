@@ -1,6 +1,6 @@
 package com.example.administrator.beerviewer.data.source.local;
 
-import com.example.administrator.beerviewer.data.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
 
 import java.util.List;
@@ -33,8 +33,8 @@ public class BeerLocalDataSource implements BeerDataSource{
     }
 
     @Override
-    public void getBeers(int pageStart, int pageEnd, LoadBeersCallback callback) {
-        List<BeerModel> beers = beerDao.getBeers(pageStart, pageEnd);
+    public void getBeers(int pageStart, int perPage, LoadBeersCallback callback) {
+        List<BeerModel> beers = beerDao.getBeers(pageStart, perPage);
 
         if (beers != null)
             callback.onTaskLoaded(beers);

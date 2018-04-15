@@ -1,6 +1,6 @@
 package com.example.administrator.beerviewer.data.source;
 
-import com.example.administrator.beerviewer.data.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
 
 import java.util.List;
 
@@ -19,5 +19,5 @@ public interface BeerDataSource {
 
     Single<List<BeerModel>> getBeers();
 
-    void getBeers(int pageStart, int pageEnd, LoadBeersCallback callback);
+    void getBeers(int pageStart, int perPage, LoadBeersCallback callback);
 }

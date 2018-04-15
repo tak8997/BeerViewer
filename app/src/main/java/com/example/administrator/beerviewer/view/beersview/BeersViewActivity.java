@@ -8,9 +8,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.example.administrator.beerviewer.R;
-import com.example.administrator.beerviewer.data.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.view.OnBottomReachedListener;
 
 import java.util.List;
 
@@ -22,6 +24,8 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 public class BeersViewActivity extends DaggerAppCompatActivity
         implements SwipeRefreshLayout.OnRefreshListener, BeersViewContract.View {
+
+    private static final String TAG = BeersViewActivity.class.getSimpleName();
 
     @BindView(R.id.refreshlayout)
     SwipeRefreshLayout refreshLayout;
@@ -38,7 +42,7 @@ public class BeersViewActivity extends DaggerAppCompatActivity
     private BeersAdapter adapter;
 
     private int pageStart = 1;
-    private int pageEnd = 10;
+    private int perPage = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +53,19 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         initView();
 
         presenter.takeView(this);
-        presenter.getBeers(pageStart, pageEnd);
+        presenter.getBeers(pageStart++, perPage);
     }
 
     private void initView() {
         setSupportActionBar(toolbar);
 
         adapter = new BeersAdapter();
+        adapter.setOnBottomReachedListener(new OnBottomReachedListener() {
+            @Override
+            public void onBottomReached(int position) {
+                presenter.getBeersFromBottom(pageStart++, perPage, position);
+            }
+        });
         beerRecycler.setLayoutManager(new LinearLayoutManager(this));
         beerRecycler.setAdapter(adapter);
 
@@ -75,11 +85,22 @@ public class BeersViewActivity extends DaggerAppCompatActivity
     }
 
     @Override
+    public void showItemsFromBottom(final List<BeerModel> beers, final int position) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "bottom reached " + position );
+                adapter.addItemsFromBottom(beers, position);
+            }
+        });
+    }
+
+    @Override
     public void onRefresh() {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                presenter.getBeers(pageStart += 10, pageEnd += 10);
+                presenter.getBeers(pageStart++, perPage);
                 refreshLayout.setRefreshing(false);
             }
         }, 1000);

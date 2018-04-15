@@ -6,8 +6,8 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.example.administrator.beerviewer.data.BeerModel;
-import com.example.administrator.beerviewer.data.WishModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.WishModel;
 
 import java.util.List;
 

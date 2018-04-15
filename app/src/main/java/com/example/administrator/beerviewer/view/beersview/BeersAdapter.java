@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.beerviewer.R;
-import com.example.administrator.beerviewer.data.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.view.OnBottomReachedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 public class BeersAdapter extends RecyclerView.Adapter<BeersViewHolder> {
 
     private List<BeerModel> items = new ArrayList<>();
+    private OnBottomReachedListener listener;
+
 
     @Override
     public BeersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -27,7 +30,14 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersViewHolder> {
 
     @Override
     public void onBindViewHolder(BeersViewHolder holder, int position) {
+        if (position == items.size() - 1)
+            listener.onBottomReached(position);
+
         holder.bindItem(items.get(position));
+    }
+
+    public void setOnBottomReachedListener(OnBottomReachedListener onBottomReachedListener) {
+        this.listener = onBottomReachedListener;
     }
 
     @Override
@@ -35,8 +45,13 @@ public class BeersAdapter extends RecyclerView.Adapter<BeersViewHolder> {
         return items.size();
     }
 
-    public void addItems(List<BeerModel> item) {
-        this.items.addAll(0, item);
+    public void addItems(List<BeerModel> beers) {
+        this.items.addAll(0, beers);
+        this.notifyDataSetChanged();
+    }
+
+    public void addItemsFromBottom(List<BeerModel> beers, int position) {
+        this.items.addAll(position, beers);
         this.notifyDataSetChanged();
     }
 }

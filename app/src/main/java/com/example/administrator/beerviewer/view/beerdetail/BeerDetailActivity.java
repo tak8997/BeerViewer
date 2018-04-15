@@ -18,7 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.beerviewer.BeerViewerApplication;
 import com.example.administrator.beerviewer.Constant;
 import com.example.administrator.beerviewer.R;
-import com.example.administrator.beerviewer.data.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
 
 import butterknife.BindView;

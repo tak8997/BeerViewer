@@ -1,6 +1,6 @@
 package com.example.administrator.beerviewer.view.beersview;
 
-import com.example.administrator.beerviewer.data.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
     public void start() { }
 
     @Override
-    public void getBeers(int pageStart, int pageEnd) {
-        beerRepository.getBeers(pageStart, pageEnd, new BeerDataSource.LoadBeersCallback() {
+    public void getBeers(int pageStart, int perPage) {
+        beerRepository.getBeers(pageStart, perPage, new BeerDataSource.LoadBeersCallback() {
             @Override
             public void onTaskLoaded(List<BeerModel> beers) {
                 view.showItems(beers);
@@ -33,11 +33,21 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
 
             }
         });
+    }
 
-//        List<BeerModel> beers
-//                = BeerDatabase.getInstance().getBeerDao().getBeers(pageStart, pageEnd);
-//
-//        view.showItems(beers);
+    @Override
+    public void getBeersFromBottom(int pageStart, int perPage, final int position) {
+        beerRepository.getBeers(pageStart, perPage, new BeerDataSource.LoadBeersCallback() {
+            @Override
+            public void onTaskLoaded(List<BeerModel> beers) {
+                view.showItemsFromBottom(beers, position);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     @Override

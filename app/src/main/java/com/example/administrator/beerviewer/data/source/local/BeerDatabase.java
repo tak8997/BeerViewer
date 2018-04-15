@@ -5,8 +5,8 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 
 import com.example.administrator.beerviewer.BeerViewerApplication;
-import com.example.administrator.beerviewer.data.BeerModel;
-import com.example.administrator.beerviewer.data.WishModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.WishModel;
 
 import java.util.List;
 

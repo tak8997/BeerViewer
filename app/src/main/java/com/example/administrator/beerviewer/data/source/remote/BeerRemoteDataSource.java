@@ -1,7 +1,7 @@
 package com.example.administrator.beerviewer.data.source.remote;
 
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
-import com.example.administrator.beerviewer.data.BeerModel;
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
 import com.example.administrator.beerviewer.network.BeerApiService;
 
 import java.util.List;
@@ -10,6 +10,10 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 @Singleton
 public class BeerRemoteDataSource implements BeerDataSource {
@@ -32,8 +36,27 @@ public class BeerRemoteDataSource implements BeerDataSource {
     }
 
     @Override
-    public void getBeers(int pageStart, int pageEnd, LoadBeersCallback callback) {
+    public void getBeers(int pageStart, int perPage, final LoadBeersCallback callback) {
+        apiService
+                .getBeers(pageStart, perPage)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<BeerModel>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onSuccess(List<BeerModel> beerModels) {
+                        callback.onTaskLoaded(beerModels);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
 

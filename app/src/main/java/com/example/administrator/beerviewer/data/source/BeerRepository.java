@@ -1,6 +1,8 @@
 package com.example.administrator.beerviewer.data.source;
 
-import com.example.administrator.beerviewer.data.BeerModel;
+import android.util.Log;
+
+import com.example.administrator.beerviewer.data.source.model.BeerModel;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import io.reactivex.Single;
 
 @Singleton
 public class BeerRepository implements BeerDataSource {
+
+    private static final String TAG = BeerRepository.class.getSimpleName();
 
     private BeerDataSource beerRemoteDataSource;
     private BeerDataSource beerLocalDataSource;
@@ -34,21 +38,38 @@ public class BeerRepository implements BeerDataSource {
         return beerRemoteDataSource.getBeers();
     }
 
+    /**
+     * local cache check
+     * @param pageStart
+     * @param perPage
+     * @param callback
+     */
     @Override
-    public void getBeers(int pageStart, int pageEnd, final LoadBeersCallback callback) {
-        if (isCache) {
-            beerLocalDataSource.getBeers(pageStart, pageEnd, new LoadBeersCallback() {
-                @Override
-                public void onTaskLoaded(List<BeerModel> beers) {
-                    callback.onTaskLoaded(beers);
-                }
+    public void getBeers(final int pageStart, final int perPage, final LoadBeersCallback callback) {
+        beerLocalDataSource.getBeers(pageStart, perPage, new LoadBeersCallback() {
+            @Override
+            public void onTaskLoaded(List<BeerModel> beers) {
+                Log.d(TAG, "local cache");
+                callback.onTaskLoaded(beers);
+            }
 
-                @Override
-                public void onDataNotAvailable() {
-                    //TODO : call remote
-                }
-            });
-        }
+            @Override
+            public void onDataNotAvailable() {
+                Log.d(TAG, "remote call");
+                beerRemoteDataSource.getBeers(pageStart, perPage, new LoadBeersCallback() {
+                    @Override
+                    public void onTaskLoaded(List<BeerModel> beers) {
+                        callback.onTaskLoaded(beers);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        //TODO : 다시 local로 가서 첫번째 부터 보여줌.
+                    }
+                });
+            }
+        });
+
     }
 
 }
