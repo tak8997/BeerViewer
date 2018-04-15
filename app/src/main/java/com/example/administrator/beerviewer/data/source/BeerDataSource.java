@@ -8,6 +8,8 @@ import io.reactivex.Single;
 
 public interface BeerDataSource {
 
+    void addBeers(List<BeerModel> beers);
+
     interface LoadBeersCallback {
 
         void onTaskLoaded(List<BeerModel> beers);
@@ -15,7 +17,7 @@ public interface BeerDataSource {
         void onDataNotAvailable();
     }
 
-    Single<List<BeerModel>> getAllBeers();
+    Single<List<BeerModel>> getBeers();
 
     void getBeers(int pageStart, int pageEnd, LoadBeersCallback callback);
 }

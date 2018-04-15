@@ -39,6 +39,7 @@ public class BeersViewActivity extends DaggerAppCompatActivity
 
     private int pageStart = 1;
     private int pageEnd = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +48,6 @@ public class BeersViewActivity extends DaggerAppCompatActivity
 
         initView();
 
-//        presenter = new BeersViewPresenter();
         presenter.takeView(this);
         presenter.getBeers(pageStart, pageEnd);
     }

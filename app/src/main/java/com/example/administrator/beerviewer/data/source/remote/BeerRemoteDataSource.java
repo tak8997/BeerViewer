@@ -22,7 +22,12 @@ public class BeerRemoteDataSource implements BeerDataSource {
     private final BeerApiService apiService;
 
     @Override
-    public Single<List<BeerModel>> getAllBeers() {
+    public void addBeers(List<BeerModel> beers) {
+
+    }
+
+    @Override
+    public Single<List<BeerModel>> getBeers() {
         return apiService.getBeers();
     }
 

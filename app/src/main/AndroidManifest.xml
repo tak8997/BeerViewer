@@ -12,9 +12,10 @@
         android:supportsRtl="true"
         android:name=".BeerViewerApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.beersview.BeersViewActivity">
+        <activity android:name=".view.beersview.BeersViewActivity" />
 
-        </activity>
+        <activity android:name=".view.beerdetail.BeerDetailActivity" />
+
         <activity
             android:name=".view.splash.SplashActivity"
             android:theme="@style/AppTheme.SplashBar">

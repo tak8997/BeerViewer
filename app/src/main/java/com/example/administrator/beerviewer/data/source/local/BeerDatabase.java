@@ -42,18 +42,18 @@ public abstract class BeerDatabase extends RoomDatabase {
         return instance;
     }
 
-    public abstract BeerDao getBeerDao();
+    public abstract BeerDao beerDao();
 
     public void addBeers(List<BeerModel> beers) {
-        List<BeerModel> previous = getBeerDao().getAllBeers();
+        List<BeerModel> previous = beerDao().getAllBeers();
         List<BeerModel> inserts = beers;
 
-        getBeerDao().deleteBeers(previous);
-        getBeerDao().insertBeers(inserts);
+        beerDao().deleteBeers(previous);
+        beerDao().insertBeers(inserts);
     }
 
     public void insertOrUpdateWish(WishModel wish) {
-        getBeerDao().insertWish(wish);
+        beerDao().insertWish(wish);
     }
 }
 

@@ -1,10 +1,15 @@
 package com.example.administrator.beerviewer.di;
 
 
+import android.app.Application;
+import android.arch.persistence.room.Room;
+
 import com.example.administrator.beerviewer.Constant;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
 import com.example.administrator.beerviewer.data.source.Local;
 import com.example.administrator.beerviewer.data.source.Remote;
+import com.example.administrator.beerviewer.data.source.local.BeerDao;
+import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
 import com.example.administrator.beerviewer.data.source.local.BeerLocalDataSource;
 import com.example.administrator.beerviewer.data.source.remote.BeerRemoteDataSource;
 import com.example.administrator.beerviewer.network.BeerApiService;
@@ -58,6 +63,24 @@ public class BeerRepositoryModule {
 
     @Provides
     @Singleton
+    BeerDatabase provideBeerDatabase(Application context) {
+        return Room.databaseBuilder(
+                context,
+                BeerDatabase.class,
+                Constant.DB_NAME)
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    BeerDao provideBeerDao(BeerDatabase beerDatabase) {
+        return beerDatabase.beerDao();
+    }
+
+    @Provides
+    @Singleton
     @Remote
     BeerDataSource provideBeerRemoteDataSource(BeerApiService beerApiService) {
         return new BeerRemoteDataSource(beerApiService);
@@ -66,8 +89,8 @@ public class BeerRepositoryModule {
     @Provides
     @Singleton
     @Local
-    BeerDataSource provideBeerLocalDataSource() {
-        return new BeerLocalDataSource();
+    BeerDataSource provideBeerLocalDataSource(BeerDao beerDao) {
+        return new BeerLocalDataSource(beerDao);
     }
 
 }

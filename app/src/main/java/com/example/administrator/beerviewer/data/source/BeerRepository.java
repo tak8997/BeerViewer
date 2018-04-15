@@ -25,22 +25,27 @@ public class BeerRepository implements BeerDataSource {
 
 
     @Override
-    public Single<List<BeerModel>> getAllBeers() {
-        return beerRemoteDataSource.getAllBeers();
+    public void addBeers(List<BeerModel> beers) {
+        beerLocalDataSource.addBeers(beers);
     }
 
     @Override
-    public void getBeers(int pageStart, int pageEnd, LoadBeersCallback callback) {
+    public Single<List<BeerModel>> getBeers() {
+        return beerRemoteDataSource.getBeers();
+    }
+
+    @Override
+    public void getBeers(int pageStart, int pageEnd, final LoadBeersCallback callback) {
         if (isCache) {
             beerLocalDataSource.getBeers(pageStart, pageEnd, new LoadBeersCallback() {
                 @Override
                 public void onTaskLoaded(List<BeerModel> beers) {
-
+                    callback.onTaskLoaded(beers);
                 }
 
                 @Override
                 public void onDataNotAvailable() {
-
+                    //TODO : call remote
                 }
             });
         }

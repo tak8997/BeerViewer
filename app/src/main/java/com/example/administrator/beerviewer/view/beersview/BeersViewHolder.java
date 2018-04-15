@@ -1,8 +1,6 @@
 package com.example.administrator.beerviewer.view.beersview;
 
 import android.content.Intent;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -49,9 +47,9 @@ public class BeersViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), BeerDetailActivity.class);
                 intent.putExtra(Constant.KEY_BEAR_ID, beer.getId());
-
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(view.getContext(), R.anim.slide_right_in, R.anim.slide_left_out);
-                ActivityCompat.startActivity(view.getContext(), intent, options.toBundle());
+                view.getContext().startActivity(intent);
+//                ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(view.getContext(), R.anim.slide_right_in, R.anim.slide_left_out);
+//                ActivityCompat.startActivity(view.getContext(), intent, options.toBundle());
             }
         });
     }

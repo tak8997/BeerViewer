@@ -6,7 +6,6 @@ import com.example.administrator.beerviewer.BeerViewerApplication;
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerRepository;
-import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     private void getBeers() {
-        beerRespository.getAllBeers()
+        beerRespository.getBeers()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<BeerModel>>() {
@@ -45,7 +44,8 @@ public class SplashPresenter implements SplashContract.Presenter {
                         List<BeerModel> beers = beerModels;
                         Log.d("SplashActivity", "beer_size : " + beers.size() + "");
                         if(beers != null) {
-                            BeerDatabase.getInstance().addBeers(beers);
+//                            BeerDatabase.getInstance().addBeers(beers);
+                            beerRespository.addBeers(beers);
                             view.startBeerViewActivity();
                         } else
                             view.showFailureMessage(BeerViewerApplication.getInstance().getString(R.string.no_data));

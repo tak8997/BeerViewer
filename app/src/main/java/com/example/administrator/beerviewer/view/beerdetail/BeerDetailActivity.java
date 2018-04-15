@@ -82,7 +82,7 @@ public class BeerDetailActivity extends AppCompatActivity {
     }
 
     private void getBeer(int beerId) {
-        beer = BeerDatabase.getInstance().getBeerDao().getBeer(beerId);
+        beer = BeerDatabase.getInstance().beerDao().getBeer(beerId);
         if (beer != null) {
             Glide.with(BeerViewerApplication.getInstance())
                     .load(beer.getImageUrl())
