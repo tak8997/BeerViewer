@@ -30,6 +30,9 @@ public class BeersViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.beer_title)
     TextView tvTitle;
 
+    @BindView(R.id.id)
+    TextView tvId;
+
     @BindView(R.id.beer_tagline)
     TextView tvTagline;
 
@@ -62,6 +65,7 @@ public class BeersViewHolder extends RecyclerView.ViewHolder {
                 .apply(new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(image);
+        tvId.setText(beer.getId() + "");
         tvTitle.setText(beerModel.getName());
         tvTagline.setText(beerModel.getTagline());
         tvFirstBrewed.setText("제조날짜 : " + beerModel.getFirstBrewed());
