@@ -29,6 +29,35 @@ public class BeerRepository implements BeerDataSource {
 
 
     @Override
+    public void getBeer(final int beerId, final GetBeerCallback callback) {
+        beerLocalDataSource.getBeer(beerId, new GetBeerCallback() {
+            @Override
+            public void onBeerLoaded(BeerModel beer) {
+                Log.d(TAG, "get beer local call");
+                callback.onBeerLoaded(beer);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                beerRemoteDataSource.getBeer(beerId, new GetBeerCallback() {
+                    @Override
+                    public void onBeerLoaded(BeerModel beer) {
+                        //TODO : do memory local cache
+                        Log.d(TAG, "get beer remote call");
+                        callback.onBeerLoaded(beer);
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+                        Log.d(TAG, "get beer remote call fail");
+                        callback.onDataNotAvailable();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
     public void addBeers(List<BeerModel> beers) {
         beerLocalDataSource.addBeers(beers);
     }
@@ -49,13 +78,13 @@ public class BeerRepository implements BeerDataSource {
         beerLocalDataSource.getBeers(pageStart, perPage, new LoadBeersCallback() {
             @Override
             public void onTaskLoaded(List<BeerModel> beers) {
-                Log.d(TAG, "local cache");
+                Log.d(TAG, "get beers local cache");
                 callback.onTaskLoaded(beers);
             }
 
             @Override
             public void onDataNotAvailable() {
-                Log.d(TAG, "remote call");
+                Log.d(TAG, "get beers remote call");
                 beerRemoteDataSource.getBeers(pageStart, perPage, new LoadBeersCallback() {
                     @Override
                     public void onTaskLoaded(List<BeerModel> beers) {

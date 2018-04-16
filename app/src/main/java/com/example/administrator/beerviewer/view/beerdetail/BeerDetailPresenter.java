@@ -1,17 +1,24 @@
 package com.example.administrator.beerviewer.view.beerdetail;
 
-import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
+import android.util.Log;
+
+import com.example.administrator.beerviewer.BeerViewerApplication;
+import com.example.administrator.beerviewer.R;
+import com.example.administrator.beerviewer.data.source.BeerDataSource;
 import com.example.administrator.beerviewer.data.source.model.BeerModel;
+
+import javax.inject.Inject;
 
 public class BeerDetailPresenter implements BeerDetailContract.Presenter {
 
     private BeerDetailContract.View view;
+    private BeerDataSource beerRepository;
 
-    private BeerModel beer;
     private int beerId;
 
-    public BeerDetailPresenter() {
-
+    @Inject
+    public BeerDetailPresenter(BeerDataSource beerRepository) {
+        this.beerRepository = beerRepository;
     }
 
     @Override
@@ -20,16 +27,33 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     }
 
     private void getBeer() {
-        beer = BeerDatabase.getInstance().beerDao().getBeer(beerId);
-        if (beer != null)
-            view.showDetailBeer(beer);
+        beerRepository.getBeer(beerId, new BeerDataSource.GetBeerCallback() {
+            @Override
+            public void onBeerLoaded(BeerModel beer) {
+                view.showDetailBeer(beer);
+
+                appendBeerContent(beer);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                view.showFailureMessage(BeerViewerApplication.getInstance().getString(R.string.cannot_load_data));
+            }
+        });
+
+//        beer = BeerDatabase.getInstance().beerDao().getBeer(beerId);
+//        if (beer != null)
+//            view.showDetailBeer(beer);
+    }
+
+    private String beerInfo;
+    public void appendBeerContent(BeerModel beer) {
+        beerInfo = beer.getName() +"\n" + beer.getTagline() + "\n" + beer.getDescription() + "\n"
+                + beer.getBrewersTips() + "\n" + beer.getContributedBy() + "\n" + beer.getFirstBrewed();
     }
 
     @Override
-    public void appendBeerContent() {
-        String beerInfo = beer.getName() +"\n" + beer.getTagline() + "\n" + beer.getDescription() + "\n"
-                + beer.getBrewersTips() + "\n" + beer.getContributedBy() + "\n" +beer.getFirstBrewed();
-
+    public void processBeerContent() {
         view.showShareDialog(beerInfo);
     }
 

@@ -11,7 +11,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
 
-public class BeerViewerApplication extends DaggerApplication{
+public class BeerViewerApplication extends DaggerApplication {
 
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;

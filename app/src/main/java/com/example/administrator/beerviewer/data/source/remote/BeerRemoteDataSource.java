@@ -26,9 +26,7 @@ public class BeerRemoteDataSource implements BeerDataSource {
     private final BeerApiService apiService;
 
     @Override
-    public void addBeers(List<BeerModel> beers) {
-
-    }
+    public void addBeers(List<BeerModel> beers) { }
 
     @Override
     public Single<List<BeerModel>> getBeers() {
@@ -49,7 +47,10 @@ public class BeerRemoteDataSource implements BeerDataSource {
 
                     @Override
                     public void onSuccess(List<BeerModel> beerModels) {
-                        callback.onTaskLoaded(beerModels);
+                        if (beerModels.size() == 0)
+                            callback.onDataNotAvailable();
+                        else
+                            callback.onTaskLoaded(beerModels);
                     }
 
                     @Override
@@ -59,5 +60,9 @@ public class BeerRemoteDataSource implements BeerDataSource {
                 });
     }
 
+    @Override
+    public void getBeer(int beerId, GetBeerCallback callback) {
+
+    }
 
 }

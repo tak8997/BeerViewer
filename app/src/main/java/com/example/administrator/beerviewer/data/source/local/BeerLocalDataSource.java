@@ -42,4 +42,25 @@ public class BeerLocalDataSource implements BeerDataSource{
             callback.onDataNotAvailable();
     }
 
+    @Override
+    public void getBeer(int beerId, GetBeerCallback callback) {
+        BeerModel beer = beerDao.getBeer(beerId);
+        if (beer != null)
+            callback.onBeerLoaded(beer);
+        else
+            callback.onDataNotAvailable();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

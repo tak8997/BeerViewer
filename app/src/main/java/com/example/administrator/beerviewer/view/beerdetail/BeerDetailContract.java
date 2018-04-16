@@ -11,13 +11,15 @@ public interface BeerDetailContract {
         void showDetailBeer(BeerModel beer);
 
         void showShareDialog(String beerInfo);
+
+        void showFailureMessage(String msg);
     }
 
     interface Presenter extends BasePresenter<View> {
 
         void setBeerId(int beerId);
 
-        void appendBeerContent();
+        void processBeerContent();
     }
 
 }

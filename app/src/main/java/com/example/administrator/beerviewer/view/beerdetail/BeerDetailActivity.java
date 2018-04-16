@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,10 +22,13 @@ import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.source.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public class BeerDetailActivity extends AppCompatActivity
+public class BeerDetailActivity extends DaggerAppCompatActivity
         implements BeerDetailContract.View {
 
     @BindView(R.id.beer_img) ImageView image;
@@ -40,7 +44,8 @@ public class BeerDetailActivity extends AppCompatActivity
 
     @BindView(R.id.cardview) CardView cardView;
 
-    private BeerDetailContract.Presenter presenter;
+    @Inject
+    BeerDetailContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,6 @@ public class BeerDetailActivity extends AppCompatActivity
             return;
         }
 
-        presenter = new BeerDetailPresenter();
         presenter.takeView(this);
         presenter.setBeerId(beerId);
         presenter.start();
@@ -93,7 +97,7 @@ public class BeerDetailActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.share:
-                presenter.appendBeerContent();
+                presenter.processBeerContent();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -106,5 +110,10 @@ public class BeerDetailActivity extends AppCompatActivity
         intent.putExtra(Intent.EXTRA_TEXT, beerInfo);
         intent.setType("text/plain");
         startActivity(Intent.createChooser(intent, getResources().getText(R.string.send_to)));
+    }
+
+    @Override
+    public void showFailureMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }
