@@ -24,39 +24,23 @@ import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BeerDetailActivity extends AppCompatActivity {
+public class BeerDetailActivity extends AppCompatActivity
+        implements BeerDetailContract.View {
 
-    @BindView(R.id.beer_img)
-    ImageView image;
+    @BindView(R.id.beer_img) ImageView image;
+    @BindView(R.id.beer_title) TextView tvTitle;
+    @BindView(R.id.beer_tagline) TextView tvTagline;
+    @BindView(R.id.beer_first_brewed) TextView tvFirstBrewed;
+    @BindView(R.id.beer_description) TextView tvDescription;
+    @BindView(R.id.beer_brewers_tips) TextView tvBrewersTips;
+    @BindView(R.id.beer_contributed_by) TextView tvContributedBy;
 
-    @BindView(R.id.beer_title)
-    TextView tvTitle;
+    @BindView(R.id.app_bar) Toolbar toolbar;
+    @BindView(R.id.app_bar_title) TextView tvBarTitle;
 
-    @BindView(R.id.beer_tagline)
-    TextView tvTagline;
+    @BindView(R.id.cardview) CardView cardView;
 
-    @BindView(R.id.beer_first_brewed)
-    TextView tvFirstBrewed;
-
-    @BindView(R.id.beer_description)
-    TextView tvDescription;
-
-    @BindView(R.id.beer_brewers_tips)
-    TextView tvBrewersTips;
-
-    @BindView(R.id.beer_contributed_by)
-    TextView tvContributedBy;
-
-    @BindView(R.id.app_bar)
-    Toolbar toolbar;
-
-    @BindView(R.id.app_bar_title)
-    TextView tvBarTitle;
-
-    @BindView(R.id.cardview)
-    CardView cardView;
-
-    private BeerModel beer;
+    private BeerDetailContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,39 +48,39 @@ public class BeerDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_beer_detail);
         ButterKnife.bind(this);
 
-        initView();
-
         int beerId = getIntent().getIntExtra(Constant.KEY_BEAR_ID, -1);
         if (beerId == -1) {
             finish();
             return;
         }
 
-        getBeer(beerId);
+        presenter = new BeerDetailPresenter();
+        presenter.takeView(this);
+        presenter.setBeerId(beerId);
+        presenter.start();
+
+        initView();
     }
 
     private void initView() {
         setSupportActionBar(toolbar);
-        Animation layoutAnimation = AnimationUtils.loadAnimation(this, R.anim.snazzy);
-        cardView.startAnimation(layoutAnimation);
+        cardView.startAnimation(AnimationUtils.loadAnimation(this, R.anim.snazzy));
     }
 
-    private void getBeer(int beerId) {
-        beer = BeerDatabase.getInstance().beerDao().getBeer(beerId);
-        if (beer != null) {
-            Glide.with(BeerViewerApplication.getInstance())
-                    .load(beer.getImageUrl())
-                    .apply(new RequestOptions()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(image);
-            tvTitle.setText("이름 :  " + beer.getName());
-            tvTagline.setText("태그 :  " + beer.getTagline());
-            tvDescription.setText(beer.getDescription());
-            tvBrewersTips.setText(beer.getBrewersTips());
-            tvContributedBy.setText("기여한 사람 :  " + beer.getContributedBy());
-            tvFirstBrewed.setText("제조날짜 :  " + beer.getFirstBrewed());
-            tvBarTitle.setText(beer.getName());
-        }
+    @Override
+    public void showDetailBeer(BeerModel beer) {
+        Glide.with(BeerViewerApplication.getInstance())
+                .load(beer.getImageUrl())
+                .apply(new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(image);
+        tvTitle.setText("이름 :  " + beer.getName());
+        tvTagline.setText("태그 :  " + beer.getTagline());
+        tvDescription.setText(beer.getDescription());
+        tvBrewersTips.setText(beer.getBrewersTips());
+        tvContributedBy.setText("기여한 사람 :  " + beer.getContributedBy());
+        tvFirstBrewed.setText("제조날짜 :  " + beer.getFirstBrewed());
+        tvBarTitle.setText(beer.getName());
     }
 
     @Override
@@ -109,15 +93,14 @@ public class BeerDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.share:
-                shareContent();
+                presenter.appendBeerContent();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void shareContent() {
-        String beerInfo = beer.getName() +"\n" + beer.getTagline() + "\n" + beer.getDescription() + "\n"
-                + beer.getBrewersTips() + "\n" + beer.getContributedBy() + "\n" +beer.getFirstBrewed();
+    @Override
+    public void showShareDialog(String beerInfo) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, beerInfo);
