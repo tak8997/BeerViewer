@@ -40,5 +40,4 @@ public interface AppComponent extends AndroidInjector<BeerViewerApplication> {
         AppComponent build();
     }
 
-//    void inject(BeerViewerApplication application);
 }

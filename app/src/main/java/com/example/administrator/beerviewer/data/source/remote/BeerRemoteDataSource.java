@@ -1,7 +1,7 @@
 package com.example.administrator.beerviewer.data.source.remote;
 
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.network.BeerApiService;
 
 import java.util.List;

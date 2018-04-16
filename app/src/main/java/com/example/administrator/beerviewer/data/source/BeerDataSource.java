@@ -1,6 +1,6 @@
 package com.example.administrator.beerviewer.data.source;
 
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.model.BeerModel;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.example.administrator.beerviewer.view.beerdetail;
 
 import com.example.administrator.beerviewer.BasePresenter;
 import com.example.administrator.beerviewer.BaseView;
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.model.BeerModel;
 
 public interface BeerDetailContract {
 
@@ -16,8 +16,6 @@ public interface BeerDetailContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-
-        void setBeerId(int beerId);
 
         void processBeerContent();
     }

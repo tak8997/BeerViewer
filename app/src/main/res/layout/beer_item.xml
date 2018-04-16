@@ -47,6 +47,8 @@
             android:id="@+id/beer_tagline"
             app:layout_constraintBottom_toTopOf="@+id/beer_first_brewed"
             app:layout_constraintLeft_toRightOf="@+id/beer_img"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="14sp"
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"

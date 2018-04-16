@@ -1,12 +1,11 @@
 package com.example.administrator.beerviewer.view.beerdetail;
 
-import android.util.Log;
-
 import com.example.administrator.beerviewer.BeerViewerApplication;
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.model.BeerModel;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 public class BeerDetailPresenter implements BeerDetailContract.Presenter {
@@ -14,11 +13,14 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     private BeerDetailContract.View view;
     private BeerDataSource beerRepository;
 
+    @Nullable
     private int beerId;
+    private String beerInfo;
 
     @Inject
-    public BeerDetailPresenter(BeerDataSource beerRepository) {
+    public BeerDetailPresenter(BeerDataSource beerRepository, @Nullable int beerId) {
         this.beerRepository = beerRepository;
+        this.beerId = beerId;
     }
 
     @Override
@@ -27,26 +29,23 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     }
 
     private void getBeer() {
-        beerRepository.getBeer(beerId, new BeerDataSource.GetBeerCallback() {
-            @Override
-            public void onBeerLoaded(BeerModel beer) {
-                view.showDetailBeer(beer);
+        if (beerId != -1) {
+            beerRepository.getBeer(beerId, new BeerDataSource.GetBeerCallback() {
+                @Override
+                public void onBeerLoaded(BeerModel beer) {
+                    view.showDetailBeer(beer);
 
-                appendBeerContent(beer);
-            }
+                    appendBeerContent(beer);
+                }
 
-            @Override
-            public void onDataNotAvailable() {
-                view.showFailureMessage(BeerViewerApplication.getInstance().getString(R.string.cannot_load_data));
-            }
-        });
-
-//        beer = BeerDatabase.getInstance().beerDao().getBeer(beerId);
-//        if (beer != null)
-//            view.showDetailBeer(beer);
+                @Override
+                public void onDataNotAvailable() {
+                    view.showFailureMessage(BeerViewerApplication.getInstance().getString(R.string.cannot_load_data));
+                }
+            });
+        }
     }
 
-    private String beerInfo;
     public void appendBeerContent(BeerModel beer) {
         beerInfo = beer.getName() +"\n" + beer.getTagline() + "\n" + beer.getDescription() + "\n"
                 + beer.getBrewersTips() + "\n" + beer.getContributedBy() + "\n" + beer.getFirstBrewed();
@@ -65,10 +64,5 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     @Override
     public void dropView() {
         this.view = null;
-    }
-
-    @Override
-    public void setBeerId(int beerId) {
-        this.beerId = beerId;
     }
 }

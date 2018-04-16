@@ -2,12 +2,10 @@ package com.example.administrator.beerviewer.view.beerdetail;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,10 +15,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.administrator.beerviewer.BeerViewerApplication;
-import com.example.administrator.beerviewer.Constant;
 import com.example.administrator.beerviewer.R;
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
-import com.example.administrator.beerviewer.data.source.local.BeerDatabase;
+import com.example.administrator.beerviewer.data.model.BeerModel;
 
 import javax.inject.Inject;
 
@@ -45,6 +41,9 @@ public class BeerDetailActivity extends DaggerAppCompatActivity
     @BindView(R.id.cardview) CardView cardView;
 
     @Inject
+    int beerId;
+
+    @Inject
     BeerDetailContract.Presenter presenter;
 
     @Override
@@ -53,14 +52,14 @@ public class BeerDetailActivity extends DaggerAppCompatActivity
         setContentView(R.layout.activity_beer_detail);
         ButterKnife.bind(this);
 
-        int beerId = getIntent().getIntExtra(Constant.KEY_BEAR_ID, -1);
-        if (beerId == -1) {
-            finish();
-            return;
-        }
+//        int beerId = getIntent().getIntExtra(Constant.KEY_BEAR_ID, -1);
+//        if (beerId == -1) {
+//            finish();
+//            return;
+//        }
 
         presenter.takeView(this);
-        presenter.setBeerId(beerId);
+//        presenter.setBeerId(beerId);
         presenter.start();
 
         initView();

@@ -1,4 +1,4 @@
-package com.example.administrator.beerviewer.data.source.model;
+package com.example.administrator.beerviewer.data.model;
 
 import android.arch.persistence.room.ColumnInfo;
 

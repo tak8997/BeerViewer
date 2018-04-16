@@ -1,13 +1,18 @@
 package com.example.administrator.beerviewer.data.source.local;
 
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import android.util.Log;
+
+import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
+import com.example.administrator.beerviewer.util.IndexUtil;
+
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
+
 
 public class BeerLocalDataSource implements BeerDataSource{
 
@@ -34,9 +39,12 @@ public class BeerLocalDataSource implements BeerDataSource{
 
     @Override
     public void getBeers(int pageStart, int perPage, LoadBeersCallback callback) {
-        List<BeerModel> beers = beerDao.getBeers(pageStart, perPage);
+        int indexStart = IndexUtil.getIndex(pageStart);
 
-        if (beers != null)
+        List<BeerModel> beers = beerDao.getBeers(indexStart, perPage);
+        Log.d("123123s", pageStart + " , " + indexStart);
+        Log.d("123123s", beers.size() + " !!");
+        if (beers.size() != 0)
             callback.onTaskLoaded(beers);
         else
             callback.onDataNotAvailable();

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.beerviewer.R;
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.view.OnBottomReachedListener;
 
 import java.util.ArrayList;

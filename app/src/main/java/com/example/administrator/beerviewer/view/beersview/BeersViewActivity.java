@@ -11,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.example.administrator.beerviewer.R;
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.view.OnBottomReachedListener;
 
 import java.util.List;

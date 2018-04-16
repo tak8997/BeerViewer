@@ -1,4 +1,4 @@
-package com.example.administrator.beerviewer.data.source.model;
+package com.example.administrator.beerviewer.data.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Tak on 2018. 1. 27..
  */
 
-public class Hops {
+public class Malt {
     @SerializedName("name")
     @ColumnInfo(name = "name")
     String name;
@@ -18,19 +18,9 @@ public class Hops {
     @Embedded
     Amount amount;
 
-    @SerializedName("add")
-    @ColumnInfo(name = "add")
-    String add;
-
-    @SerializedName("attribute")
-    @ColumnInfo(name = "attribute")
-    String attribute;
-
-    public Hops(String name, Amount amount, String add, String attribute) {
+    public Malt(String name, Amount amount) {
         this.name = name;
         this.amount = amount;
-        this.add = add;
-        this.attribute = attribute;
     }
 
     public String getName() {
@@ -47,21 +37,5 @@ public class Hops {
 
     public void setAmount(Amount amount) {
         this.amount = amount;
-    }
-
-    public String getAdd() {
-        return add;
-    }
-
-    public void setAdd(String add) {
-        this.add = add;
-    }
-
-    public String getAttribute() {
-        return attribute;
-    }
-
-    public void setAttribute(String attribute) {
-        this.attribute = attribute;
     }
 }

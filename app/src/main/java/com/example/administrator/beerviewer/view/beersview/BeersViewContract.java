@@ -2,7 +2,7 @@ package com.example.administrator.beerviewer.view.beersview;
 
 import com.example.administrator.beerviewer.BasePresenter;
 import com.example.administrator.beerviewer.BaseView;
-import com.example.administrator.beerviewer.data.source.model.BeerModel;
+import com.example.administrator.beerviewer.data.model.BeerModel;
 
 import java.util.List;
 
