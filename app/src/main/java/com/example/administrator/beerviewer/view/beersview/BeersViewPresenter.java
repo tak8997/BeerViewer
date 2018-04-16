@@ -1,5 +1,7 @@
 package com.example.administrator.beerviewer.view.beersview;
 
+import android.util.Log;
+
 import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
 
@@ -21,7 +23,7 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
     public void start() { }
 
     @Override
-    public void getBeers(int pageStart, int perPage) {
+    public void getBeers(Integer pageStart, int perPage) {
         beerRepository.getBeers(pageStart, perPage, new BeerDataSource.LoadBeersCallback() {
             @Override
             public void onTaskLoaded(List<BeerModel> beers) {

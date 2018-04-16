@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.model.BeerModel;
+import com.example.administrator.beerviewer.rxbus.Events;
+import com.example.administrator.beerviewer.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.view.OnBottomReachedListener;
 
 import java.util.List;
@@ -21,9 +23,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class BeersViewActivity extends DaggerAppCompatActivity
-        implements SwipeRefreshLayout.OnRefreshListener, BeersViewContract.View {
+        implements SwipeRefreshLayout.OnRefreshListener, OnBottomReachedListener, BeersViewContract.View {
 
     private static final String TAG = BeersViewActivity.class.getSimpleName();
 
@@ -41,7 +45,9 @@ public class BeersViewActivity extends DaggerAppCompatActivity
 
     private BeersAdapter adapter;
 
-    private int pageStart = 1;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+
+    public int pageStart = 1;
     private int perPage = 25;
 
     @Override
@@ -51,6 +57,7 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         ButterKnife.bind(this);
 
         initView();
+        onEventBusCalled();
 
         presenter.takeView(this);
         presenter.getBeers(pageStart++, perPage);
@@ -60,12 +67,7 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         setSupportActionBar(toolbar);
 
         adapter = new BeersAdapter();
-        adapter.setOnBottomReachedListener(new OnBottomReachedListener() {
-            @Override
-            public void onBottomReached(int position) {
-                presenter.getBeersFromBottom(pageStart++, perPage, position);
-            }
-        });
+        adapter.setOnBottomReachedListener(this);
         beerRecycler.setLayoutManager(new LinearLayoutManager(this));
         beerRecycler.setAdapter(adapter);
 
@@ -89,7 +91,6 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "bottom reached " + position );
                 adapter.addItemsFromBottom(beers, position);
             }
         });
@@ -106,5 +107,18 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         }, 1000);
     }
 
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    @Override
+    public void onBottomReached(int position) {
+        presenter.getBeersFromBottom(pageStart++, perPage, position);
+    }
+
+    private void onEventBusCalled() {
+        RxEventBus.getInstance().getBusObservable()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    if (event instanceof Events.PageEvent)
+                        pageStart = 1;
+                });
+    }
 }

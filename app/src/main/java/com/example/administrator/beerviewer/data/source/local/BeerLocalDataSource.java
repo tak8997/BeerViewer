@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
+import com.example.administrator.beerviewer.rxbus.Events;
+import com.example.administrator.beerviewer.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.util.IndexUtil;
 
 
@@ -23,6 +25,10 @@ public class BeerLocalDataSource implements BeerDataSource{
         this.beerDao = beerDao;
     }
 
+    private void sendEventBus() {
+        RxEventBus.getInstance().post(new Events.PageEvent());
+    }
+
     @Override
     public void addBeers(List<BeerModel> beers) {
         List<BeerModel> previous = beerDao.getAllBeers();
@@ -39,7 +45,12 @@ public class BeerLocalDataSource implements BeerDataSource{
 
     @Override
     public void getBeers(int pageStart, int perPage, LoadBeersCallback callback) {
-        int indexStart = IndexUtil.getIndex(pageStart);
+        int indexStart;
+        if (pageStart == 10) {
+            indexStart = IndexUtil.getIndex(pageStart);
+            sendEventBus();
+        } else
+            indexStart = IndexUtil.getIndex(pageStart);
 
         List<BeerModel> beers = beerDao.getBeers(indexStart, perPage);
         Log.d("123123s", pageStart + " , " + indexStart);

@@ -10,8 +10,7 @@ public class IndexUtil {
     //TODO : hashmap -> sparseintarray
     private static final Map<Integer, Integer> indexMap = new HashMap<>();
 
-    static
-    {
+    static {
         indexMap.put(1, 1); indexMap.put(2, 26);
         indexMap.put(3, 51); indexMap.put(4, 76);
         indexMap.put(5, 101); indexMap.put(6, 126);
