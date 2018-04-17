@@ -26,7 +26,6 @@ public class SplashActivity extends DaggerAppCompatActivity
         setContentView(R.layout.activity_splash);
 
         presenter.takeView(this);
-        showSplashAnimation();
     }
 
     @Override
@@ -35,7 +34,8 @@ public class SplashActivity extends DaggerAppCompatActivity
         presenter.start();
     }
 
-    private void showSplashAnimation() {
+    @Override
+    public void showSplashAnimation() {
         final ImageView imgSplash = findViewById(R.id.beer_animation);
         Glide.with(this)
                 .asGif()

@@ -10,6 +10,8 @@ public interface SplashContract {
         void startBeerViewActivity();
 
         void showFailureMessage(String msg);
+
+        void showSplashAnimation();
     }
 
     interface Presenter extends BasePresenter<View> {
