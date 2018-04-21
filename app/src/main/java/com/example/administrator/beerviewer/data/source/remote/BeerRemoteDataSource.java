@@ -1,7 +1,7 @@
 package com.example.administrator.beerviewer.data.source.remote;
 
-import com.example.administrator.beerviewer.data.source.BeerDataSource;
 import com.example.administrator.beerviewer.data.model.BeerModel;
+import com.example.administrator.beerviewer.data.source.BeerDataSource;
 import com.example.administrator.beerviewer.network.BeerApiService;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Single;
+import io.reactivex.Maybe;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -29,7 +29,7 @@ public class BeerRemoteDataSource implements BeerDataSource {
     public void addBeers(List<BeerModel> beers) { }
 
     @Override
-    public Single<List<BeerModel>> getBeers() {
+    public Maybe<List<BeerModel>> getBeers() {
         return apiService.getBeers();
     }
 

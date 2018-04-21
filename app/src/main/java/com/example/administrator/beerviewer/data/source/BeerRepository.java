@@ -9,7 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Single;
+import io.reactivex.Maybe;
 
 @Singleton
 public class BeerRepository implements BeerDataSource {
@@ -63,8 +63,15 @@ public class BeerRepository implements BeerDataSource {
     }
 
     @Override
-    public Single<List<BeerModel>> getBeers() {
-        return beerRemoteDataSource.getBeers();
+    public Maybe<List<BeerModel>> getBeers() {
+        return beerRemoteDataSource.getBeers()
+                .filter(beers-> {
+                    if (!beers.isEmpty()) {
+                        addBeers(beers);    //save local cache
+                        return true;
+                    } else
+                        return false;
+                });
     }
 
     /**

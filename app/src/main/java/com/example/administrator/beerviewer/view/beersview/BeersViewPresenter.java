@@ -1,6 +1,5 @@
 package com.example.administrator.beerviewer.view.beersview;
 
-import android.util.Log;
 
 import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
