@@ -13,6 +13,8 @@ public interface BeersViewContract {
         void showItems(List<BeerModel> beers);
 
         void showItemsFromBottom(List<BeerModel> beers, int position);
+
+        void setPageStart();
     }
 
     interface Presenter extends BasePresenter<View> {

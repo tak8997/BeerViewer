@@ -56,7 +56,6 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         ButterKnife.bind(this);
 
         initView();
-        onEventBusCalled();
 
         presenter.takeView(this);
         presenter.getBeers(pageStart++, perPage);
@@ -117,13 +116,8 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         presenter.getBeersFromBottom(pageStart++, perPage, position);
     }
 
-    private void onEventBusCalled() {
-        RxEventBus.getInstance().getBusObservable()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(event -> {
-                    if (event instanceof Events.PageEvent)
-                        pageStart = 1;
-                });
+    @Override
+    public void setPageStart() {
+        pageStart = 1;
     }
 }

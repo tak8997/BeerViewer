@@ -3,6 +3,8 @@ package com.example.administrator.beerviewer.view.beersview;
 
 import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
+import com.example.administrator.beerviewer.rx.rxbus.Events;
+import com.example.administrator.beerviewer.rx.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.rx.schedulers.BaseSchedulerProvider;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class BeersViewPresenter implements BeersViewContract.Presenter {
 
@@ -21,6 +24,7 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
     private BeersViewContract.View view;
 
     private CompositeDisposable compositeDisposable;
+    private Disposable disposable;
 
     @Inject
     public BeersViewPresenter(BeerDataSource beerRepository, BaseSchedulerProvider schedulerProvider) {
@@ -28,6 +32,7 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
         this.schedulerProvider = schedulerProvider;
 
         this.compositeDisposable = new CompositeDisposable();
+        onEventBusCalled();
     }
 
     @Override
@@ -54,12 +59,23 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
         compositeDisposable.add(disposable);
     }
 
+    private void onEventBusCalled() {
+        disposable = RxEventBus.getInstance().getBusObservable()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    if (event instanceof Events.PageEvent)
+                        view.setPageStart();
+                });
+    }
+
     @Override
     public void subscribe() { }
 
     @Override
     public void unsubscribe() {
         compositeDisposable.clear();
+        disposable.dispose();
     }
 
     @Override

@@ -44,24 +44,6 @@ public class BeerLocalDataSource implements BeerDataSource{
         return null;
     }
 
-//    @Override
-//    public void getBeers(int pageStart, int perPage, LoadBeersCallback callback) {
-//        int indexStart;
-//        if (pageStart == 10) {
-//            indexStart = IndexUtil.getIndex(pageStart);
-//            sendEventBus();
-//        } else
-//            indexStart = IndexUtil.getIndex(pageStart);
-//
-//        List<BeerModel> beers = beerDao.getBeers(indexStart, perPage);
-//        Log.d("123123s", pageStart + " , " + indexStart);
-//        Log.d("123123s", beers.size() + " !!");
-//        if (beers.size() != 0)
-//            callback.onTaskLoaded(beers);
-//        else
-//            callback.onDataNotAvailable();
-//    }
-
     @Override
     public Single<List<BeerModel>> getBeers(int pageStart, int perPage) {
         int indexStart;
