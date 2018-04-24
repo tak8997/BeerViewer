@@ -12,10 +12,11 @@ import com.example.administrator.beerviewer.util.IndexUtil;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Single;
 
-
+@Singleton
 public class BeerLocalDataSource implements BeerDataSource{
 
     private BeerDao beerDao;
