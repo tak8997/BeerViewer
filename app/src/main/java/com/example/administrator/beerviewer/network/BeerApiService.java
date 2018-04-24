@@ -4,6 +4,7 @@ import com.example.administrator.beerviewer.data.model.BeerModel;
 
 import java.util.List;
 
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -15,7 +16,7 @@ import retrofit2.http.Query;
 public interface BeerApiService {
 
     @GET("beers/")
-    Single<List<BeerModel>> getBeers();
+    Maybe<List<BeerModel>> getBeers();
 
     @GET("beers/")
     Single<List<BeerModel>> getBeers(@Query("page") int page, @Query("per_page") int perPage);

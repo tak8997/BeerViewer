@@ -4,7 +4,7 @@ import com.example.administrator.beerviewer.data.model.BeerModel;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Maybe;
 
 public interface BeerDataSource {
 
@@ -24,7 +24,7 @@ public interface BeerDataSource {
 
     void addBeers(List<BeerModel> beers);
 
-    Single<List<BeerModel>> getBeers();
+    Maybe<List<BeerModel>> getBeers();
 
     void getBeers(int pageStart, int perPage, LoadBeersCallback callback);
 

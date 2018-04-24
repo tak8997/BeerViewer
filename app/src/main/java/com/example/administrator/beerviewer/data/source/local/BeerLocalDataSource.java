@@ -8,13 +8,12 @@ import com.example.administrator.beerviewer.rxbus.Events;
 import com.example.administrator.beerviewer.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.util.IndexUtil;
 
-
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Single;
+import io.reactivex.Maybe;
 
 @Singleton
 public class BeerLocalDataSource implements BeerDataSource{
@@ -40,7 +39,7 @@ public class BeerLocalDataSource implements BeerDataSource{
     }
 
     @Override
-    public Single<List<BeerModel>> getBeers() {
+    public Maybe<List<BeerModel>> getBeers() {
         return null;
     }
 
