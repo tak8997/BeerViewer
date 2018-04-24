@@ -10,16 +10,14 @@ import javax.inject.Inject;
 
 public class BeersViewPresenter implements BeersViewContract.Presenter {
 
-    private BeersViewContract.View view;
     private BeerDataSource beerRepository;
+    private BeersViewContract.View view;
 
     @Inject
-    public BeersViewPresenter(BeerDataSource beerRepository) {
+    public BeersViewPresenter(BeerDataSource beerRepository, BeersViewContract.View view) {
         this.beerRepository = beerRepository;
+        this.view = view;
     }
-
-    @Override
-    public void start() { }
 
     @Override
     public void getBeers(Integer pageStart, int perPage) {
@@ -52,12 +50,10 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
     }
 
     @Override
-    public void takeView(BeersViewContract.View view) {
-        this.view = view;
-    }
+    public void subscribe() { }
 
     @Override
-    public void dropView() {
-        this.view = null;
+    public void unsubscribe() {
+
     }
 }

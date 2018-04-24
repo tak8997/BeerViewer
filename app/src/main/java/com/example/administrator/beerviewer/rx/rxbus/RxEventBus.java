@@ -1,4 +1,4 @@
-package com.example.administrator.beerviewer.rxbus;
+package com.example.administrator.beerviewer.rx.rxbus;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;

@@ -8,24 +8,22 @@ import com.example.administrator.beerviewer.data.model.BeerModel;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
+
 public class BeerDetailPresenter implements BeerDetailContract.Presenter {
 
-    private BeerDetailContract.View view;
     private BeerDataSource beerRepository;
+    private BeerDetailContract.View view;
 
     @Nullable
     private int beerId;
     private String beerInfo;
 
     @Inject
-    public BeerDetailPresenter(BeerDataSource beerRepository, @Nullable int beerId) {
+    public BeerDetailPresenter(BeerDataSource beerRepository, BeerDetailContract.View view, @Nullable int beerId) {
         this.beerRepository = beerRepository;
+        this.view = view;
         this.beerId = beerId;
-    }
-
-    @Override
-    public void start() {
-        getBeer();
     }
 
     private void getBeer() {
@@ -57,12 +55,12 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     }
 
     @Override
-    public void takeView(BeerDetailContract.View view) {
-        this.view = view;
+    public void subscribe() {
+        getBeer();
     }
 
     @Override
-    public void dropView() {
-        this.view = null;
+    public void unsubscribe() {
+
     }
 }

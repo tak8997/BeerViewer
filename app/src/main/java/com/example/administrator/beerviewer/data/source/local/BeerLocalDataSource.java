@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
-import com.example.administrator.beerviewer.rxbus.Events;
-import com.example.administrator.beerviewer.rxbus.RxEventBus;
+import com.example.administrator.beerviewer.rx.rxbus.Events;
+import com.example.administrator.beerviewer.rx.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.util.IndexUtil;
 
 import java.util.List;

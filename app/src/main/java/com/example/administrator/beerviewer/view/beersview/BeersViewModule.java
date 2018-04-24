@@ -10,10 +10,15 @@ import dagger.Provides;
 @Module
 public class BeersViewModule {
 
+    @Provides
+    @ActivityScope
+    BeersViewContract.View provideBeersViewActivity() {
+        return new BeersViewActivity();
+    }
 
     @Provides
     @ActivityScope
-    BeersViewContract.Presenter provideBeersViewPresenter(BeerRepository beerRepository) {
-        return new BeersViewPresenter(beerRepository);
+    BeersViewContract.Presenter provideBeersViewPresenter(BeerRepository beerRepository, BeersViewContract.View beersViewActivity) {
+        return new BeersViewPresenter(beerRepository, beersViewActivity);
     }
 }

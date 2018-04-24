@@ -14,14 +14,20 @@ public class BeerDetailModule {
 
     @Provides
     @ActivityScope
+    BeerDetailContract.View provideBeerDetailActivity() {
+        return new BeerDetailActivity();
+    }
+
+    @Provides
+    @ActivityScope
     static int provideBeerId(BeerDetailActivity activity) {
         return activity.getIntent().getIntExtra(Constant.KEY_BEAR_ID, -1);
     }
 
     @Provides
     @ActivityScope
-    BeerDetailContract.Presenter provideBeerDetailPresenter(BeerRepository beerRepository, int beerId) {
-        return new BeerDetailPresenter(beerRepository, beerId);
+    BeerDetailContract.Presenter provideBeerDetailPresenter(BeerRepository beerRepository, BeerDetailContract.View beerDetailActivity, int beerId) {
+        return new BeerDetailPresenter(beerRepository, beerDetailActivity, beerId);
     }
 
 }

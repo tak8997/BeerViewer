@@ -8,12 +8,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.model.BeerModel;
-import com.example.administrator.beerviewer.rxbus.Events;
-import com.example.administrator.beerviewer.rxbus.RxEventBus;
+import com.example.administrator.beerviewer.rx.rxbus.Events;
+import com.example.administrator.beerviewer.rx.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.view.OnBottomReachedListener;
 
 import java.util.List;
@@ -59,7 +58,6 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         initView();
         onEventBusCalled();
 
-        presenter.takeView(this);
         presenter.getBeers(pageStart++, perPage);
     }
 
@@ -76,9 +74,9 @@ public class BeersViewActivity extends DaggerAppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.dropView();
+    protected void onPause() {
+        super.onPause();
+        presenter.unsubscribe();
     }
 
     @Override

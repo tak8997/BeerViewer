@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
+import io.reactivex.disposables.Disposable;
 
 public class BeerDetailActivity extends DaggerAppCompatActivity
         implements BeerDetailContract.View {
@@ -52,15 +53,7 @@ public class BeerDetailActivity extends DaggerAppCompatActivity
         setContentView(R.layout.activity_beer_detail);
         ButterKnife.bind(this);
 
-//        int beerId = getIntent().getIntExtra(Constant.KEY_BEAR_ID, -1);
-//        if (beerId == -1) {
-//            finish();
-//            return;
-//        }
-
-        presenter.takeView(this);
-//        presenter.setBeerId(beerId);
-        presenter.start();
+        presenter.subscribe();
 
         initView();
     }
@@ -114,5 +107,11 @@ public class BeerDetailActivity extends DaggerAppCompatActivity
     @Override
     public void showFailureMessage(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.unsubscribe();
     }
 }

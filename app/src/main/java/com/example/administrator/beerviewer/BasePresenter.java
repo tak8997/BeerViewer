@@ -2,9 +2,7 @@ package com.example.administrator.beerviewer;
 
 public interface BasePresenter<T> {
 
-    void takeView(T view);
+    void subscribe();
 
-    void dropView();
-
-    void start();
+    void unsubscribe();
 }
