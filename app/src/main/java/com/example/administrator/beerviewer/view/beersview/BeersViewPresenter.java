@@ -3,6 +3,7 @@ package com.example.administrator.beerviewer.view.beersview;
 
 import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
+import com.example.administrator.beerviewer.rx.schedulers.BaseSchedulerProvider;
 
 import java.util.List;
 
@@ -11,12 +12,13 @@ import javax.inject.Inject;
 public class BeersViewPresenter implements BeersViewContract.Presenter {
 
     private BeerDataSource beerRepository;
+    private BaseSchedulerProvider schedulerProvider;
     private BeersViewContract.View view;
 
     @Inject
-    public BeersViewPresenter(BeerDataSource beerRepository, BeersViewContract.View view) {
+    public BeersViewPresenter(BeerDataSource beerRepository, BaseSchedulerProvider schedulerProvider) {
         this.beerRepository = beerRepository;
-        this.view = view;
+        this.schedulerProvider = schedulerProvider;
     }
 
     @Override
@@ -55,5 +57,15 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
     @Override
     public void unsubscribe() {
 
+    }
+
+    @Override
+    public void takeView(BeersViewContract.View view) {
+        this.view = view;
+    }
+
+    @Override
+    public void dropView() {
+        this.view = null;
     }
 }

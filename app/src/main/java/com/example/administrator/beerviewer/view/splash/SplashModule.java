@@ -13,13 +13,7 @@ public class SplashModule {
 
     @Provides
     @ActivityScope
-    SplashContract.View provideSplashActivity() {
-        return new SplashActivity();
-    }
-
-    @Provides
-    @ActivityScope
-    SplashContract.Presenter provideSplashPresenter(BeerRepository beerRepository, SplashContract.View splashActivity, BaseSchedulerProvider schedulerProvider) {
-        return new SplashPresenter(beerRepository, splashActivity, schedulerProvider);
+    SplashContract.Presenter provideSplashPresenter(BeerRepository beerRepository, BaseSchedulerProvider schedulerProvider) {
+        return new SplashPresenter(beerRepository, schedulerProvider);
     }
 }

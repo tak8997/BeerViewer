@@ -20,9 +20,8 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     private String beerInfo;
 
     @Inject
-    public BeerDetailPresenter(BeerDataSource beerRepository, BeerDetailContract.View view, @Nullable int beerId) {
+    public BeerDetailPresenter(BeerDataSource beerRepository, @Nullable int beerId) {
         this.beerRepository = beerRepository;
-        this.view = view;
         this.beerId = beerId;
     }
 
@@ -62,5 +61,15 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     @Override
     public void unsubscribe() {
 
+    }
+
+    @Override
+    public void takeView(BeerDetailContract.View view) {
+        this.view = view;
+    }
+
+    @Override
+    public void dropView() {
+        this.view = null;
     }
 }

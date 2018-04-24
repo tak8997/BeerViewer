@@ -53,6 +53,7 @@ public class BeerDetailActivity extends DaggerAppCompatActivity
         setContentView(R.layout.activity_beer_detail);
         ButterKnife.bind(this);
 
+        presenter.takeView(this);
         presenter.subscribe();
 
         initView();
@@ -113,5 +114,11 @@ public class BeerDetailActivity extends DaggerAppCompatActivity
     protected void onPause() {
         super.onPause();
         presenter.unsubscribe();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.dropView();
     }
 }

@@ -58,6 +58,7 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         initView();
         onEventBusCalled();
 
+        presenter.takeView(this);
         presenter.getBeers(pageStart++, perPage);
     }
 
@@ -77,6 +78,12 @@ public class BeersViewActivity extends DaggerAppCompatActivity
     protected void onPause() {
         super.onPause();
         presenter.unsubscribe();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.dropView();
     }
 
     @Override
