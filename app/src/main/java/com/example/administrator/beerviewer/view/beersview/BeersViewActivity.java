@@ -4,16 +4,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.model.BeerModel;
-import com.example.administrator.beerviewer.rx.rxbus.Events;
-import com.example.administrator.beerviewer.rx.rxbus.RxEventBus;
-import com.example.administrator.beerviewer.view.OnBottomReachedListener;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.util.List;
 
@@ -22,16 +20,14 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class BeersViewActivity extends DaggerAppCompatActivity
-        implements SwipeRefreshLayout.OnRefreshListener, OnBottomReachedListener, BeersViewContract.View {
+        implements BeersViewContract.View, SwipyRefreshLayout.OnRefreshListener {
 
     private static final String TAG = BeersViewActivity.class.getSimpleName();
 
     @BindView(R.id.refreshlayout)
-    SwipeRefreshLayout refreshLayout;
+    com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout refreshLayout;
 
     @BindView(R.id.beer_recyler)
     RecyclerView beerRecycler;
@@ -58,14 +54,14 @@ public class BeersViewActivity extends DaggerAppCompatActivity
         initView();
 
         presenter.takeView(this);
-        presenter.getBeers(pageStart++, perPage);
+        presenter.getBeers(pageStart++, perPage, SwipyRefreshLayoutDirection.TOP);
     }
 
     private void initView() {
         setSupportActionBar(toolbar);
 
         adapter = new BeersAdapter();
-        adapter.setOnBottomReachedListener(this);
+//        adapter.setOnBottomReachedListener(this);
         beerRecycler.setLayoutManager(new LinearLayoutManager(this));
         beerRecycler.setAdapter(adapter);
 
@@ -91,33 +87,41 @@ public class BeersViewActivity extends DaggerAppCompatActivity
     }
 
     @Override
-    public void showItemsFromBottom(final List<BeerModel> beers, final int position) {
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                adapter.addItemsFromBottom(beers, position);
-            }
-        });
+    public void showItemsFromBottom(final List<BeerModel> beers) {
+        adapter.addItemsFromBottom(beers);
     }
 
-    @Override
-    public void onRefresh() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                presenter.getBeers(pageStart++, perPage);
-                refreshLayout.setRefreshing(false);
-            }
-        }, 1000);
-    }
-
-    @Override
-    public void onBottomReached(int position) {
-        presenter.getBeersFromBottom(pageStart++, perPage, position);
-    }
+//    @Override
+//    public void onRefresh() {
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                presenter.getBeers(pageStart++, perPage);
+//                refreshLayout.setRefreshing(false);
+//            }
+//        }, 1000);
+//    }
+//
+//    @Override
+//    public void onBottomReached(int position) {
+//        presenter.getBeersFromBottom(pageStart++, perPage, position);
+//    }
 
     @Override
     public void setPageStart() {
         pageStart = 1;
+    }
+
+    @Override
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                presenter.processDirection(pageStart++, perPage, direction);
+                refreshLayout.setRefreshing(false);
+            }
+        }, 1000);
+
+//        presenter.getBeers(pageStart++, perPage);
     }
 }

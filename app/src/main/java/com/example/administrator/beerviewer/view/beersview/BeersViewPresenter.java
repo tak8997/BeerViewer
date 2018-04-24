@@ -1,13 +1,11 @@
 package com.example.administrator.beerviewer.view.beersview;
 
 
-import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
 import com.example.administrator.beerviewer.rx.rxbus.Events;
 import com.example.administrator.beerviewer.rx.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.rx.schedulers.BaseSchedulerProvider;
-
-import java.util.List;
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import javax.inject.Inject;
 
@@ -36,13 +34,18 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
     }
 
     @Override
-    public void getBeers(int pageStart, int perPage) {
+    public void getBeers(int pageStart, int perPage, SwipyRefreshLayoutDirection direction) {
         compositeDisposable.clear();
         Disposable disposable = beerRepository
                 .getBeers(pageStart, perPage)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(beers-> view.showItems(beers));
+                .subscribe(beers-> {
+                    if (direction == SwipyRefreshLayoutDirection.TOP)
+                        view.showItems(beers);
+                    else if (direction == SwipyRefreshLayoutDirection.BOTTOM)
+                        view.showItemsFromBottom(beers);
+                });
 
         compositeDisposable.add(disposable);
     }
@@ -54,7 +57,7 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
                 .getBeers(pageStart, perPage)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(beers-> view.showItemsFromBottom(beers, position));
+                .subscribe(beers-> view.showItemsFromBottom(beers));
 
         compositeDisposable.add(disposable);
     }
@@ -67,6 +70,11 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
                     if (event instanceof Events.PageEvent)
                         view.setPageStart();
                 });
+    }
+
+    @Override
+    public void processDirection(int pageStart, int perPage, SwipyRefreshLayoutDirection direction) {
+        getBeers(pageStart, perPage, direction);
     }
 
     @Override
