@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 @Singleton
 public class BeerLocalDataSource implements BeerDataSource{
@@ -30,7 +31,7 @@ public class BeerLocalDataSource implements BeerDataSource{
     }
 
     @Override
-    public void addBeers(List<BeerModel> beers) {
+    public void saveBeers(List<BeerModel> beers) {
         List<BeerModel> previous = beerDao.getAllBeers();
         List<BeerModel> inserts = beers;
 
@@ -43,8 +44,26 @@ public class BeerLocalDataSource implements BeerDataSource{
         return null;
     }
 
+//    @Override
+//    public void getBeers(int pageStart, int perPage, LoadBeersCallback callback) {
+//        int indexStart;
+//        if (pageStart == 10) {
+//            indexStart = IndexUtil.getIndex(pageStart);
+//            sendEventBus();
+//        } else
+//            indexStart = IndexUtil.getIndex(pageStart);
+//
+//        List<BeerModel> beers = beerDao.getBeers(indexStart, perPage);
+//        Log.d("123123s", pageStart + " , " + indexStart);
+//        Log.d("123123s", beers.size() + " !!");
+//        if (beers.size() != 0)
+//            callback.onTaskLoaded(beers);
+//        else
+//            callback.onDataNotAvailable();
+//    }
+
     @Override
-    public void getBeers(int pageStart, int perPage, LoadBeersCallback callback) {
+    public Single<List<BeerModel>> getBeers(int pageStart, int perPage) {
         int indexStart;
         if (pageStart == 10) {
             indexStart = IndexUtil.getIndex(pageStart);
@@ -52,13 +71,7 @@ public class BeerLocalDataSource implements BeerDataSource{
         } else
             indexStart = IndexUtil.getIndex(pageStart);
 
-        List<BeerModel> beers = beerDao.getBeers(indexStart, perPage);
-        Log.d("123123s", pageStart + " , " + indexStart);
-        Log.d("123123s", beers.size() + " !!");
-        if (beers.size() != 0)
-            callback.onTaskLoaded(beers);
-        else
-            callback.onDataNotAvailable();
+        return beerDao.getBeers(indexStart, perPage);
     }
 
     @Override

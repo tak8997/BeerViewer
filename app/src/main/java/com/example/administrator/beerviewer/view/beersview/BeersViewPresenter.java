@@ -9,46 +9,49 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 public class BeersViewPresenter implements BeersViewContract.Presenter {
 
     private BeerDataSource beerRepository;
     private BaseSchedulerProvider schedulerProvider;
+
     private BeersViewContract.View view;
+
+    private CompositeDisposable compositeDisposable;
 
     @Inject
     public BeersViewPresenter(BeerDataSource beerRepository, BaseSchedulerProvider schedulerProvider) {
         this.beerRepository = beerRepository;
         this.schedulerProvider = schedulerProvider;
+
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     @Override
-    public void getBeers(Integer pageStart, int perPage) {
-        beerRepository.getBeers(pageStart, perPage, new BeerDataSource.LoadBeersCallback() {
-            @Override
-            public void onTaskLoaded(List<BeerModel> beers) {
-                view.showItems(beers);
-            }
+    public void getBeers(int pageStart, int perPage) {
+        compositeDisposable.clear();
+        Disposable disposable = beerRepository
+                .getBeers(pageStart, perPage)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(beers-> view.showItems(beers));
 
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void getBeersFromBottom(int pageStart, int perPage, final int position) {
-        beerRepository.getBeers(pageStart, perPage, new BeerDataSource.LoadBeersCallback() {
-            @Override
-            public void onTaskLoaded(List<BeerModel> beers) {
-                view.showItemsFromBottom(beers, position);
-            }
+        compositeDisposable.clear();
+        Disposable disposable = beerRepository
+                .getBeers(pageStart, perPage)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(beers-> view.showItemsFromBottom(beers, position));
 
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
+        compositeDisposable.add(disposable);
     }
 
     @Override
@@ -56,7 +59,7 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
 
     @Override
     public void unsubscribe() {
-
+        compositeDisposable.clear();
     }
 
     @Override

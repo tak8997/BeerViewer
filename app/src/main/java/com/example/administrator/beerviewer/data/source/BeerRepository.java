@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Maybe;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
 
 @Singleton
 public class BeerRepository implements BeerDataSource {
@@ -58,8 +60,8 @@ public class BeerRepository implements BeerDataSource {
     }
 
     @Override
-    public void addBeers(List<BeerModel> beers) {
-        beerLocalDataSource.addBeers(beers);
+    public void saveBeers(List<BeerModel> beers) {
+        beerLocalDataSource.saveBeers(beers);
     }
 
     @Override
@@ -67,45 +69,57 @@ public class BeerRepository implements BeerDataSource {
         return beerRemoteDataSource.getBeers()
                 .filter(beers-> {
                     if (!beers.isEmpty()) {
-                        addBeers(beers);    //save local cache
+                        saveBeers(beers);    //save local cache
                         return true;
                     } else
                         return false;
                 });
     }
 
-    /**
-     * local cache check
-     * @param pageStart
-     * @param perPage
-     * @param callback
-     */
+//    /**
+//     * local cache check
+//     * @param pageStart
+//     * @param perPage
+//     * @param callback
+//     */
+//    @Override
+//    public void getBeers(final int pageStart, final int perPage, final LoadBeersCallback callback) {
+//        beerLocalDataSource.getBeers(pageStart, perPage, new LoadBeersCallback() {
+//            @Override
+//            public void onTaskLoaded(List<BeerModel> beers) {
+//                Log.d(TAG, "get beers local cache");
+//                callback.onTaskLoaded(beers);
+//            }
+//
+//            @Override
+//            public void onDataNotAvailable() {
+//                Log.d(TAG, "get beers remote call");
+//                beerRemoteDataSource.getBeers(pageStart, perPage, new LoadBeersCallback() {
+//                    @Override
+//                    public void onTaskLoaded(List<BeerModel> beers) {
+//                        callback.onTaskLoaded(beers);
+//                    }
+//
+//                    @Override
+//                    public void onDataNotAvailable() {
+//                        //TODO : 다시 local로 가서 첫번째 부터 보여줌.
+//                    }
+//                });
+//            }
+//        });
+//
+//    }
+
     @Override
-    public void getBeers(final int pageStart, final int perPage, final LoadBeersCallback callback) {
-        beerLocalDataSource.getBeers(pageStart, perPage, new LoadBeersCallback() {
-            @Override
-            public void onTaskLoaded(List<BeerModel> beers) {
-                Log.d(TAG, "get beers local cache");
-                callback.onTaskLoaded(beers);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                Log.d(TAG, "get beers remote call");
-                beerRemoteDataSource.getBeers(pageStart, perPage, new LoadBeersCallback() {
-                    @Override
-                    public void onTaskLoaded(List<BeerModel> beers) {
-                        callback.onTaskLoaded(beers);
-                    }
-
-                    @Override
-                    public void onDataNotAvailable() {
-                        //TODO : 다시 local로 가서 첫번째 부터 보여줌.
-                    }
-                });
-            }
-        });
-
+    public Single<List<BeerModel>> getBeers(int pageStart, int perPage) {
+        return beerLocalDataSource.getBeers(pageStart, perPage)
+                .filter(beers-> !beers.isEmpty())
+                .switchIfEmpty(getBeersFromRemote(pageStart, perPage));     //if local is empty, get from remote
     }
 
+    private SingleSource<? extends List<BeerModel>> getBeersFromRemote(int pageStart, int perPage) {
+        return beerRemoteDataSource.getBeers(pageStart, perPage)
+                .filter(remoteBeers-> !remoteBeers.isEmpty())
+                .toSingle();
+    }
 }

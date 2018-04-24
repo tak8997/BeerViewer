@@ -11,6 +11,8 @@ import com.example.administrator.beerviewer.data.model.WishModel;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 
 /**
  * Created by Tak on 2018. 1. 27..
@@ -23,7 +25,7 @@ public interface BeerDao {
     List<BeerModel> getAllBeers();
 
     @Query("SELECT * FROM beer WHERE id >= :pageStart AND id <= :pageEnd")
-    List<BeerModel> getBeers(int pageStart, int pageEnd);
+    Single<List<BeerModel>> getBeers(int pageStart, int pageEnd);
 
     @Delete
     void deleteBeers(List<BeerModel> deletes);

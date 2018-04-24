@@ -44,17 +44,17 @@ public abstract class BeerDatabase extends RoomDatabase {
 
     public abstract BeerDao beerDao();
 
-    public void addBeers(List<BeerModel> beers) {
-        List<BeerModel> previous = beerDao().getAllBeers();
-        List<BeerModel> inserts = beers;
-
-        beerDao().deleteBeers(previous);
-        beerDao().insertBeers(inserts);
-    }
-
-    public void insertOrUpdateWish(WishModel wish) {
-        beerDao().insertWish(wish);
-    }
+//    public void addBeers(List<BeerModel> beers) {
+//        List<BeerModel> previous = beerDao().getAllBeers();
+//        List<BeerModel> inserts = beers;
+//
+//        beerDao().deleteBeers(previous);
+//        beerDao().insertBeers(inserts);
+//    }
+//
+//    public void insertOrUpdateWish(WishModel wish) {
+//        beerDao().insertWish(wish);
+//    }
 }
 
 

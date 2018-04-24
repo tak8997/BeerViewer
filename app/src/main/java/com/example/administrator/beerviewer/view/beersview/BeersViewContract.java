@@ -17,7 +17,7 @@ public interface BeersViewContract {
 
     interface Presenter extends BasePresenter<View> {
 
-        void getBeers(Integer pageStart, int perPage);
+        void getBeers(int pageStart, int perPage);
 
         void getBeersFromBottom(int pageStart, int perPage, int position);
     }
