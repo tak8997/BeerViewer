@@ -83,6 +83,10 @@ public class BeersViewPresenter implements BeersViewContract.Presenter {
     @Override
     public void unsubscribe() {
         compositeDisposable.clear();
+    }
+
+    @Override
+    public void unsubscribeEventBus() {
         disposable.dispose();
     }
 

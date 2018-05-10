@@ -79,6 +79,7 @@ public class BeersViewActivity extends DaggerAppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         presenter.dropView();
+        presenter.unsubscribeEventBus();
     }
 
     @Override

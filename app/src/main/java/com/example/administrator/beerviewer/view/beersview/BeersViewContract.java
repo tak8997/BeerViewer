@@ -25,6 +25,8 @@ public interface BeersViewContract {
         void getBeersFromBottom(int pageStart, int perPage, int position);
 
         void processDirection(int pageStart, int perPage, SwipyRefreshLayoutDirection direction);
+
+        void unsubscribeEventBus();
     }
 
 }
