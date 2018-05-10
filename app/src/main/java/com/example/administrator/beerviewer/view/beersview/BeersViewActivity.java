@@ -8,12 +8,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.example.administrator.beerviewer.R;
 import com.example.administrator.beerviewer.data.model.BeerModel;
-import com.example.administrator.beerviewer.rxbus.Events;
-import com.example.administrator.beerviewer.rxbus.RxEventBus;
+import com.example.administrator.beerviewer.util.rxbus.Events;
+import com.example.administrator.beerviewer.util.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.view.OnBottomReachedListener;
 
 import java.util.List;

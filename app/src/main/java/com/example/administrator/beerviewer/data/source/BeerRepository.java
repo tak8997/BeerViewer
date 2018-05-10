@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 @Singleton
 public class BeerRepository implements BeerDataSource {
@@ -105,7 +106,10 @@ public class BeerRepository implements BeerDataSource {
                 });
             }
         });
-
     }
 
+    @Override
+    public Single<List<BeerModel>> getBeers(int pageStart, int perPage) {
+        return beerLocalDataSource.getBeers(pageStart, perPage);
+    }
 }

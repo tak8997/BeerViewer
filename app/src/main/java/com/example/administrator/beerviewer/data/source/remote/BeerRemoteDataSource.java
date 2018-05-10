@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -58,6 +59,11 @@ public class BeerRemoteDataSource implements BeerDataSource {
                         e.printStackTrace();
                     }
                 });
+    }
+
+    @Override
+    public Single<List<BeerModel>> getBeers(int pageStart, int perPage) {
+        return null;
     }
 
     @Override

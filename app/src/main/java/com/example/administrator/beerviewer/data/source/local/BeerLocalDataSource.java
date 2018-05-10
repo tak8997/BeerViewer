@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.example.administrator.beerviewer.data.model.BeerModel;
 import com.example.administrator.beerviewer.data.source.BeerDataSource;
-import com.example.administrator.beerviewer.rxbus.Events;
-import com.example.administrator.beerviewer.rxbus.RxEventBus;
+import com.example.administrator.beerviewer.util.rxbus.Events;
+import com.example.administrator.beerviewer.util.rxbus.RxEventBus;
 import com.example.administrator.beerviewer.util.IndexUtil;
 
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 
 public class BeerLocalDataSource implements BeerDataSource{
@@ -58,6 +59,24 @@ public class BeerLocalDataSource implements BeerDataSource{
             callback.onTaskLoaded(beers);
         else
             callback.onDataNotAvailable();
+    }
+
+    @Override
+    public Single<List<BeerModel>> getBeers(int pageStart, int perPage) {
+        int indexStart;
+        if (pageStart == 10) {
+            indexStart = IndexUtil.getIndex(pageStart);
+            sendEventBus();
+        } else
+            indexStart = IndexUtil.getIndex(pageStart);
+
+//        List<BeerModel> beers = beerDao.getBeers(indexStart, perPage);
+//        Log.d("123123s", pageStart + " , " + indexStart);
+//        Log.d("123123s", beers.size() + " !!");
+
+        return beerDao.getBeers(indexStart, perPage)
+                .filter(beers-> !beers.isEmpty())
+                .toSingle();
     }
 
     @Override

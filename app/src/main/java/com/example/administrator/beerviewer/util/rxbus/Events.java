@@ -1,4 +1,4 @@
-package com.example.administrator.beerviewer.rxbus;
+package com.example.administrator.beerviewer.util.rxbus;
 
 public class Events {
 

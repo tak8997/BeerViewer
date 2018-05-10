@@ -1,4 +1,4 @@
-package com.example.android.architecture.blueprints.todoapp.util.schedulers;
+package com.example.administrator.beerviewer.util.rxschedulers;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,15 +8,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-/**
- * Provides different types of schedulers.
- */
 public class SchedulerProvider implements BaseSchedulerProvider {
 
     @Nullable
     private static SchedulerProvider INSTANCE;
 
-    // Prevent direct instantiation.
     private SchedulerProvider() {
     }
 
