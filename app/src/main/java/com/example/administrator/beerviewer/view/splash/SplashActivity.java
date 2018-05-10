@@ -8,12 +8,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.beerviewer.R;
+import com.example.administrator.beerviewer.di.ActivityScope;
 import com.example.administrator.beerviewer.view.beersview.BeersViewActivity;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
+@ActivityScope
 public class SplashActivity extends DaggerAppCompatActivity
         implements SplashContract.View {
 
@@ -24,14 +26,25 @@ public class SplashActivity extends DaggerAppCompatActivity
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         presenter.takeView(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.start();
+        presenter.subscribe();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.unsubscribe();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.dropView();
     }
 
     @Override

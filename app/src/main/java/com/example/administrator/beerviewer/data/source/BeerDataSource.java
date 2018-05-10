@@ -23,11 +23,13 @@ public interface BeerDataSource {
         void onDataNotAvailable();
     }
 
-    void addBeers(List<BeerModel> beers);
+    void saveBeers(List<BeerModel> beers);
 
     Maybe<List<BeerModel>> getBeers();
 
-    void getBeers(int pageStart, int perPage, LoadBeersCallback callback);
+    Single<List<BeerModel>> getBeers(int pageStart, int perPage);
+
+//    void getBeers(int pageStart, int perPage, LoadBeersCallback callback);
 
     Single<List<BeerModel>> getBeers(int pageStart, int perPage);
 

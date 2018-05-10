@@ -8,10 +8,12 @@ import com.example.administrator.beerviewer.data.model.BeerModel;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
+
 public class BeerDetailPresenter implements BeerDetailContract.Presenter {
 
-    private BeerDetailContract.View view;
     private BeerDataSource beerRepository;
+    private BeerDetailContract.View view;
 
     @Nullable
     private int beerId;
@@ -21,11 +23,6 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     public BeerDetailPresenter(BeerDataSource beerRepository, @Nullable int beerId) {
         this.beerRepository = beerRepository;
         this.beerId = beerId;
-    }
-
-    @Override
-    public void start() {
-        getBeer();
     }
 
     private void getBeer() {
@@ -54,6 +51,16 @@ public class BeerDetailPresenter implements BeerDetailContract.Presenter {
     @Override
     public void processBeerContent() {
         view.showShareDialog(beerInfo);
+    }
+
+    @Override
+    public void subscribe() {
+        getBeer();
+    }
+
+    @Override
+    public void unsubscribe() {
+
     }
 
     @Override

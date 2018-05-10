@@ -1,42 +1,42 @@
-package com.example.administrator.beerviewer.util.rxschedulers;
+package com.example.administrator.beerviewer.rx.schedulers;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import javax.inject.Singleton;
 
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-
 public class SchedulerProvider implements BaseSchedulerProvider {
 
-    @Nullable
-    private static SchedulerProvider INSTANCE;
+//    @Nullable
+//    private static SchedulerProvider instance;
 
-    private SchedulerProvider() {
-    }
+    public SchedulerProvider() {}
 
-    public static synchronized SchedulerProvider getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new SchedulerProvider();
-        }
-        return INSTANCE;
-    }
+//    public static synchronized SchedulerProvider getInstance() {
+//        if (instance == null)
+//            instance = new SchedulerProvider();
+//
+//        return instance;
+//    }
 
-    @Override
     @NonNull
+    @Override
     public Scheduler computation() {
         return Schedulers.computation();
     }
 
-    @Override
     @NonNull
+    @Override
     public Scheduler io() {
         return Schedulers.io();
     }
 
-    @Override
     @NonNull
+    @Override
     public Scheduler ui() {
         return AndroidSchedulers.mainThread();
     }

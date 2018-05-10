@@ -1,4 +1,4 @@
-package com.example.administrator.beerviewer.util.rxschedulers;
+package com.example.administrator.beerviewer.rx.schedulers;
 
 import android.support.annotation.NonNull;
 
